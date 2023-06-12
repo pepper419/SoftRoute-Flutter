@@ -2,6 +2,9 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'widgets/destinationCard.dart';
+
+import 'models/Destination.dart';
 
 void main() {
   runApp(const MyApp());
@@ -280,7 +283,36 @@ class AdminPage extends StatefulWidget {
 
 class _AdminPageState extends State<AdminPage> {
   late String codeSended='17';
+
+  List<Destination> destinationList = [];
   @override
+  void initState() {
+    super.initState();
+    fetchDestination();
+  }
+
+  Future<void> fetchDestination() async{
+    String base_url='http://20.150.216.134:7070/api/v1/destinations';
+    final url=Uri.parse(base_url);
+    var response =await http.get(url);
+    if(response.statusCode==200){
+      final jsonData = jsonDecode(response.body);
+      List<Destination> destinations = [];
+      for (var item in jsonData) {
+        Destination destination = Destination(
+            name: item['name']
+        );
+        destinations.add(destination);
+      }
+      setState(() {
+        destinationList = destinations;
+      });
+    }else {
+      print('Request failed with status: ${response.statusCode}');
+    }
+    print ('HOLAAAAAAAAA JULIAN TE AMO');
+  }
+
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
@@ -342,6 +374,20 @@ class _AdminPageState extends State<AdminPage> {
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ),
+                if (destinationList.isNotEmpty)
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: destinationList.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return DestinationCard(
+                        name: destinationList[index].name,
+                      );
+                    },
+                  ),
+                if (destinationList.isEmpty)
+                  CircularProgressIndicator(),
+
               ],
             ),
           ),
@@ -351,6 +397,50 @@ class _AdminPageState extends State<AdminPage> {
     );
   }
 }
+//
+// class DestinationCard extends StatefulWidget {
+//   const DestinationCard({Key? key}) : super(key: key);
+//
+//   @override
+//   State<DestinationCard> createState() => _DestinationCardState();
+// }
+//
+// class _DestinationCardState extends State<DestinationCard> {
+//
+//   // Map<String, dynamic>? destinationData={};
+//   List<Destination> destinationList = [];
+//
+//   @override
+//   void initState() {
+//     super.initState();
+//     fetchDestination();
+//   }
+//
+//   Future<void> fetchDestination() async{
+//     String base_url='http://20.150.216.134:7070/api/v1/destinations';
+//     final url=Uri.parse(base_url);
+//     var response =await http.get(url);
+//     if(response.statusCode==200){
+//       final jsonData = jsonDecode(response.body);
+//       List<Destination> destinations = [];
+//       for (var item in jsonData) {
+//         Destination destination = Destination(
+//           name: item['name']
+//         );
+//         destinations.add(destination);
+//     }
+//       setState(() {
+//         destinationList = destinations;
+//       });
+//     }else {
+//       print('Request failed with status: ${response.statusCode}');
+//     }
+//   }
+//
+//   Widget build(BuildContext context) {
+//     return const Placeholder();
+//   }
+// }
 
 
 class TrackingCard extends StatefulWidget {
