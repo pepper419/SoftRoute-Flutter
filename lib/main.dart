@@ -333,6 +333,15 @@ class _AdminPageState extends State<AdminPage> {
                   ),
                 ),
                 TrackingCard(searchQuery: '17'),
+
+                SizedBox(height: 20),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Destinations',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                ),
               ],
             ),
           ),
