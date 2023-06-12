@@ -1,3 +1,4 @@
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -48,7 +49,9 @@ class HomePage extends StatelessWidget {
                   width: 180, // <-- Your width
                   height: 50, // <-- Your height
                   child:
-                  ElevatedButton(onPressed: (){},child: Text("ADMINISTRATORS"),
+                  ElevatedButton(onPressed: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>AdminPage()));
+                  },child: Text("ADMINISTRATORS"),
                     style: ButtonStyle(
                         backgroundColor: MaterialStatePropertyAll<Color>(Color(0xFF6200EE)),
                         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -214,6 +217,132 @@ class _ClientPageState extends State<ClientPage> {
     );
   }
 }
+class BottomBar extends StatefulWidget {
+  const BottomBar({Key? key}) : super(key: key);
+
+  @override
+  State<BottomBar> createState() => _BottomBarState();
+}
+
+class _BottomBarState extends State<BottomBar> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: CurvedNavigationBar(
+        backgroundColor: Colors.white,
+        color: Colors.deepPurple,
+        animationDuration: Duration(milliseconds: 300),
+        onTap: (index){
+          switch (index) {
+            case 0:
+              Navigator.push(context, MaterialPageRoute(builder: (context) => AdminPage()),
+              );
+              break;
+            case 1:
+            // Navegar a otra página
+              break;
+          }
+        },
+        items: [
+          Icon(
+            Icons.home,
+            color: Colors.white,
+          ),
+          Icon(
+            Icons.book,
+            color: Colors.white,
+          ),
+          Icon(
+            Icons.car_crash,
+            color: Colors.white,
+          ),
+          Icon(
+            Icons.comment,
+            color: Colors.white,
+          ),
+          Icon(
+            Icons.person,
+            color: Colors.white,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
+class AdminPage extends StatefulWidget {
+  const AdminPage({Key? key}) : super(key: key);
+
+  @override
+  State<AdminPage> createState() => _AdminPageState();
+}
+
+class _AdminPageState extends State<AdminPage> {
+  late String codeSended='17';
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Scaffold(
+        appBar: CustomAppBar(),
+        bottomNavigationBar: BottomBar(),
+        body: Padding(
+          padding: const EdgeInsets.all(20),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        height: 80,
+                        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=>ClientPage()));
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xFFC8A1FF),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Search Tracking',
+                                style: TextStyle(fontSize: 20),
+                              ),
+                              Icon(Icons.arrow_forward),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+
+                ),
+                SizedBox(height: 20),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Tracking',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                TrackingCard(searchQuery: '17'),
+              ],
+            ),
+          ),
+        ),
+
+      ),
+    );
+  }
+}
+
 
 class TrackingCard extends StatefulWidget {
 
@@ -366,8 +495,12 @@ class _TrackingCardState extends State<TrackingCard> {
           Expanded(
             child: Card(
               color: Color(0xFFF0E5FF),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)
+              ),
               child: isLoading
                   ? Column(
+
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   SizedBox(
@@ -379,71 +512,94 @@ class _TrackingCardState extends State<TrackingCard> {
                   ),
                 ],
               )
-                  : Row(
-                children: [
-                  Expanded(child: Text("Map")),
-                  SizedBox(
-                    width: 10, // Espaciado horizontal
+                  : GestureDetector(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>ClientPage()));
+                },
+                child: Card(
+                  color: Color(0xFFF0E5FF),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "+Manage",
-                        style: TextStyle(color: Colors.black26),
-                      ),
-                      SizedBox(
-                        height: 5, // Espaciado vertical
-                      ),
-                      Card(
-                        color: Colors.white,
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                            vertical: 5, // Espaciado vertical
-                            horizontal: 10, // Espaciado horizontal
-                          ),
-                          child: Text(
-                            'Order #${widget.searchQuery.toString()}',
-                            style: TextStyle(
-                              color: Color(0xFF6200EE),
-                              fontWeight: FontWeight.bold,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Container(
+                              width: 120,
+                              height: 120, // Ajusta el tamaño según tus necesidades
+                              // Agrega aquí la vista de Google Maps o cualquier otro widget que desees mostrar
+                              // Puedes utilizar el widget `GoogleMap` de la biblioteca `google_maps_flutter` para mostrar el mapa
+                              // Ejemplo: GoogleMap(...),
                             ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 5, // Espaciado vertical
-                      ),
-                      Card(
-                        color: Color(0xFF6200EE),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                            vertical: 5, // Espaciado vertical
-                            horizontal: 10, // Espaciado horizontal
-                          ),
-                          child: Text(
-                            'Processing',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Card(
-                        color:Color(0xFFC8A1FF),
-                        child: IconButton(
-                          onPressed: (){
-                            print("Perrolol");
-                          },
-                          icon: Icon(Icons.arrow_forward_ios_sharp),
-                          color: Colors.white,
-                        ),
-                      )
+                            SizedBox(width: 10),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
 
-                    ],
+                                  Card(
+                                    color: Color(0xFFFFFFFF),
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(
+                                        vertical: 5, // Espaciado vertical
+                                        horizontal: 10, // Espaciado horizontal
+                                      ),
+                                      child: Text(
+                                        'Order #${widget.searchQuery.toString()}',
+                                        style: TextStyle(
+                                          color: Color(0xFF6200EE),
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(height: 10),
+
+                                  Card(
+                                    color: Color(0xFF6200EE),
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(
+                                        vertical: 5, // Espaciado vertical
+                                        horizontal: 10, // Espaciado horizontal
+                                      ),
+                                      child: Text(
+                                        'Processing',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+
+
+                                ],
+                              ),
+                            ),
+
+                            // Icon(Icons.arrow_forward),
+
+                            Card(
+                              color:Color(0xFFBA8EFC),
+                              child: IconButton(
+                                onPressed: (){
+                                  print("julian t amo");
+                                },
+                                icon: Icon(Icons.arrow_forward_ios_sharp),
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 10),
+                      ],
+                    ),
                   ),
-                ],
+                ),
               ),
             ),
           ),
