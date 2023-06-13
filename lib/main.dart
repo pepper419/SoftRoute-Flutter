@@ -1,8 +1,13 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:example_souf_route/views/addShipment.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:example_souf_route/Login.dart';
+import 'views/adminHome.dart';
+import 'widgets/destinationCard.dart';
+
+import 'models/Destination.dart';
 
 void main() {
   runApp(const MyApp());
@@ -222,59 +227,6 @@ class _ClientPageState extends State<ClientPage> {
     );
   }
 }
-class BottomBar extends StatefulWidget {
-  const BottomBar({Key? key}) : super(key: key);
-
-  @override
-  State<BottomBar> createState() => _BottomBarState();
-}
-
-class _BottomBarState extends State<BottomBar> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: CurvedNavigationBar(
-        backgroundColor: Colors.white,
-        color: Colors.deepPurple,
-        animationDuration: Duration(milliseconds: 300),
-        onTap: (index){
-          switch (index) {
-            case 0:
-              Navigator.push(context, MaterialPageRoute(builder: (context) => AdminPage()),
-              );
-              break;
-            case 1:
-            // Navegar a otra página
-              break;
-          }
-        },
-        items: [
-          Icon(
-            Icons.home,
-            color: Colors.white,
-          ),
-          Icon(
-            Icons.book,
-            color: Colors.white,
-          ),
-          Icon(
-            Icons.car_crash,
-            color: Colors.white,
-          ),
-          Icon(
-            Icons.comment,
-            color: Colors.white,
-          ),
-          Icon(
-            Icons.person,
-            color: Colors.white,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 
 class AdminPage extends StatefulWidget {
   const AdminPage({Key? key}) : super(key: key);
@@ -284,69 +236,109 @@ class AdminPage extends StatefulWidget {
 }
 
 class _AdminPageState extends State<AdminPage> {
-  late String codeSended='17';
+
+  final items=[
+    Icon(Icons.home, color: Colors.white),
+    Icon(Icons.book, color: Colors.white),
+    Icon(Icons.car_crash, color: Colors.white),
+    Icon(Icons.comment, color: Colors.white),
+    Icon(Icons.person, color: Colors.white),
+  ];
+
+  int index=0;
+
   @override
+  void initState() {
+    super.initState();
+  }
+
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         appBar: CustomAppBar(),
-        bottomNavigationBar: BottomBar(),
-        body: Padding(
-          padding: const EdgeInsets.all(20),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        height: 80,
-                        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=>ClientPage()));
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xFFC8A1FF),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Search Tracking',
-                                style: TextStyle(fontSize: 20),
-                              ),
-                              Icon(Icons.arrow_forward),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-
-                ),
-                SizedBox(height: 20),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Tracking',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                TrackingCard(searchQuery: '17'),
-              ],
-            ),
-          ),
+        bottomNavigationBar: CurvedNavigationBar(
+          height: 60,
+          backgroundColor: Colors.transparent,
+          color: Colors.deepPurple,
+          items: items,
+          index: index,
+          onTap: (index){
+            setState(() {
+              this.index=index;
+            });
+          },
+          animationDuration: Duration(milliseconds: 300),
         ),
-
+        body: Container(
+/*          width: double.infinity,
+          height: double.infinity,
+          alignment: Alignment.center,*/
+          child: getSelectedWidget(index:index),
+        )
       ),
     );
   }
+
+  Widget getSelectedWidget({required int index}) {
+    Widget widget;
+    switch(index){
+      case 0:
+        widget= AdminHome();
+        break;
+      case 1:
+        widget= AddShipment();
+        break;
+      default:
+        widget= AdminHome();
+        break;
+    }
+    return widget;
+  }
 }
+//
+// class DestinationCard extends StatefulWidget {
+//   const DestinationCard({Key? key}) : super(key: key);
+//
+//   @override
+//   State<DestinationCard> createState() => _DestinationCardState();
+// }
+//
+// class _DestinationCardState extends State<DestinationCard> {
+//
+//   // Map<String, dynamic>? destinationData={};
+//   List<Destination> destinationList = [];
+//
+//   @override
+//   void initState() {
+//     super.initState();
+//     fetchDestination();
+//   }
+//
+//   Future<void> fetchDestination() async{
+//     String base_url='http://20.150.216.134:7070/api/v1/destinations';
+//     final url=Uri.parse(base_url);
+//     var response =await http.get(url);
+//     if(response.statusCode==200){
+//       final jsonData = jsonDecode(response.body);
+//       List<Destination> destinations = [];
+//       for (var item in jsonData) {
+//         Destination destination = Destination(
+//           name: item['name']
+//         );
+//         destinations.add(destination);
+//     }
+//       setState(() {
+//         destinationList = destinations;
+//       });
+//     }else {
+//       print('Request failed with status: ${response.statusCode}');
+//     }
+//   }
+//
+//   Widget build(BuildContext context) {
+//     return const Placeholder();
+//   }
+// }
 
 
 class TrackingCard extends StatefulWidget {
