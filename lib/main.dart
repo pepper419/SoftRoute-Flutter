@@ -3,6 +3,7 @@ import 'package:example_souf_route/views/addShipment.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'views/adminHome.dart';
 import 'widgets/destinationCard.dart';
 
 import 'models/Destination.dart';
@@ -221,60 +222,6 @@ class _ClientPageState extends State<ClientPage> {
     );
   }
 }
-class BottomBar extends StatefulWidget {
-  const BottomBar({Key? key}) : super(key: key);
-
-  @override
-  State<BottomBar> createState() => _BottomBarState();
-}
-
-class _BottomBarState extends State<BottomBar> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: CurvedNavigationBar(
-        backgroundColor: Colors.white,
-        color: Colors.deepPurple,
-        animationDuration: Duration(milliseconds: 300),
-        onTap: (index){
-          switch (index) {
-            case 0:
-              Navigator.push(context, MaterialPageRoute(builder: (context) => AdminPage()),
-              );
-              break;
-            case 1:
-              Navigator.push(context, MaterialPageRoute(builder: (context) => AddShipment()),
-              );
-              break;
-          }
-        },
-        items: [
-          Icon(
-            Icons.home,
-            color: Colors.white,
-          ),
-          Icon(
-            Icons.book,
-            color: Colors.white,
-          ),
-          Icon(
-            Icons.car_crash,
-            color: Colors.white,
-          ),
-          Icon(
-            Icons.comment,
-            color: Colors.white,
-          ),
-          Icon(
-            Icons.person,
-            color: Colors.white,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 
 class AdminPage extends StatefulWidget {
   const AdminPage({Key? key}) : super(key: key);
@@ -284,119 +231,63 @@ class AdminPage extends StatefulWidget {
 }
 
 class _AdminPageState extends State<AdminPage> {
-  late String codeSended='17';
 
-  List<Destination> destinationList = [];
+  final items=[
+    Icon(Icons.home, color: Colors.white),
+    Icon(Icons.book, color: Colors.white),
+    Icon(Icons.car_crash, color: Colors.white),
+    Icon(Icons.comment, color: Colors.white),
+    Icon(Icons.person, color: Colors.white),
+  ];
+
+  int index=0;
+
   @override
   void initState() {
     super.initState();
-    fetchDestination();
-  }
-
-  Future<void> fetchDestination() async{
-    String base_url='http://20.150.216.134:7070/api/v1/destinations';
-    final url=Uri.parse(base_url);
-    var response =await http.get(url);
-    if(response.statusCode==200){
-      final jsonData = jsonDecode(response.body); //decodificacion del cuerpo
-      List<Destination> destinations = [];
-      for (var item in jsonData) {
-        Destination destination = Destination(
-            name: item['name']
-        );
-        destinations.add(destination);
-      }
-      setState(() {
-        destinationList = destinations;
-      });
-    }else {
-      print('Request failed with status: ${response.statusCode}');
-    }
-    print ('HOLAAAAAAAAA JULIAN TE AMO');
   }
 
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         appBar: CustomAppBar(),
-        bottomNavigationBar: BottomBar(),
-        body: Padding(
-          padding: const EdgeInsets.all(20),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        height: 80,
-                        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=>ClientPage()));
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xFFC8A1FF),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Search Tracking',
-                                style: TextStyle(fontSize: 20),
-                              ),
-                              Icon(Icons.arrow_forward),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-
-                ),
-                SizedBox(height: 20),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Tracking',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                TrackingCard(searchQuery: '17'),
-
-                SizedBox(height: 20),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Destinations',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                if (destinationList.isNotEmpty)
-                  ListView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: destinationList.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return DestinationCard(
-                        name: destinationList[index].name,
-                      );
-                    },
-                  ),
-                if (destinationList.isEmpty)
-                  CircularProgressIndicator(),
-
-              ],
-            ),
-          ),
+        bottomNavigationBar: CurvedNavigationBar(
+          height: 60,
+          backgroundColor: Colors.transparent,
+          color: Colors.deepPurple,
+          items: items,
+          index: index,
+          onTap: (index){
+            setState(() {
+              this.index=index;
+            });
+          },
+          animationDuration: Duration(milliseconds: 300),
         ),
-
+        body: Container(
+/*          width: double.infinity,
+          height: double.infinity,
+          alignment: Alignment.center,*/
+          child: getSelectedWidget(index:index),
+        )
       ),
     );
+  }
+
+  Widget getSelectedWidget({required int index}) {
+    Widget widget;
+    switch(index){
+      case 0:
+        widget= AdminHome();
+        break;
+      case 1:
+        widget= AddShipment();
+        break;
+      default:
+        widget= AdminHome();
+        break;
+    }
+    return widget;
   }
 }
 //

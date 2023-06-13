@@ -102,8 +102,6 @@ class _AddShipmentState extends State<AddShipment> {
   }
   Widget build(BuildContext context)=>
       Scaffold(
-        appBar: CustomAppBar(),
-        bottomNavigationBar: BottomBar(),
         body: Stepper(
           type: StepperType.horizontal,
           steps: getSteps(),
@@ -129,8 +127,6 @@ class _AddShipmentState extends State<AddShipment> {
           currentStep==0?null: ()=>setState(()=>currentStep-=1),
         ),
       );
-
-
 
   List<Step> getSteps()=>[
     Step(
