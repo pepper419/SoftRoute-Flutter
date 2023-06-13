@@ -2,6 +2,7 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:example_souf_route/Login.dart';
 
 void main() {
   runApp(const MyApp());
@@ -51,6 +52,10 @@ class HomePage extends StatelessWidget {
                   child:
                   ElevatedButton(onPressed: (){
                     Navigator.push(context, MaterialPageRoute(builder: (context)=>AdminPage()));
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => LoginView()),
+                    );
                   },child: Text("ADMINISTRATORS"),
                     style: ButtonStyle(
                         backgroundColor: MaterialStatePropertyAll<Color>(Color(0xFF6200EE)),
