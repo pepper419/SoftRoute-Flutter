@@ -1,4 +1,5 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:example_souf_route/views/addShipment.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -242,7 +243,8 @@ class _BottomBarState extends State<BottomBar> {
               );
               break;
             case 1:
-            // Navegar a otra página
+              Navigator.push(context, MaterialPageRoute(builder: (context) => AddShipment()),
+              );
               break;
           }
         },
@@ -296,7 +298,7 @@ class _AdminPageState extends State<AdminPage> {
     final url=Uri.parse(base_url);
     var response =await http.get(url);
     if(response.statusCode==200){
-      final jsonData = jsonDecode(response.body);
+      final jsonData = jsonDecode(response.body); //decodificacion del cuerpo
       List<Destination> destinations = [];
       for (var item in jsonData) {
         Destination destination = Destination(
