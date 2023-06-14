@@ -4,18 +4,22 @@ import '../main.dart';
 import 'package:http/http.dart' as http;
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import '../widgets/appBar.dart';
-import '../views/addShipment.dart';
-import '../views/adminHome.dart';
+import '../views/Administrator/AddShipmentView.dart';
+import '../views/Administrator/AdminHomeView.dart';
 
 
 class AdminPage extends StatefulWidget {
-  const AdminPage({Key? key}) : super(key: key);
+
+  final String username;
+
+  AdminPage({required this.username});
 
   @override
   State<AdminPage> createState() => _AdminPageState();
 }
 
 class _AdminPageState extends State<AdminPage> {
+
 
   final items=[
     Icon(Icons.home, color: Colors.white),
@@ -35,7 +39,7 @@ class _AdminPageState extends State<AdminPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          appBar: CustomAppBar(),
+          appBar: CustomAppBar(username: widget.username),
           bottomNavigationBar: CurvedNavigationBar(
             height: 60,
             backgroundColor: Colors.transparent,
@@ -63,13 +67,13 @@ class _AdminPageState extends State<AdminPage> {
     Widget widget;
     switch(index){
       case 0:
-        widget= AdminHome();
+        widget= AdminHomeView();
         break;
       case 1:
-        widget= AddShipment();
+        widget= AddShipmentView();
         break;
       default:
-        widget= AdminHome();
+        widget= AdminHomeView();
         break;
     }
     return widget;

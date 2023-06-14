@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'pages/Login.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'pages/administratorPage.dart';
@@ -52,7 +53,6 @@ class HomePage extends StatelessWidget {
                   height: 50, // <-- Your height
                   child:
                   ElevatedButton(onPressed: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>AdminPage()));
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => LoginView()),

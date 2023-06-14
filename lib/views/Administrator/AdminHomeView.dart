@@ -2,31 +2,31 @@ import 'dart:convert';
 import 'package:example_souf_route/models/Destination.dart';
 import 'package:example_souf_route/widgets/destinationCard.dart';
 import 'package:flutter/material.dart';
-import '../main.dart';
-import '../pages/administratorPage.dart';
-import '../pages/clientPage.dart';
-import '../widgets/trackingCard.dart';
+import '../../main.dart';
+import '../../pages/administratorPage.dart';
+import '../../pages/clientPage.dart';
+import '../../widgets/trackingCard.dart';
 import 'package:http/http.dart' as http;
 
 
-class AdminHome extends StatefulWidget {
-  const AdminHome({Key? key}) : super(key: key);
+class AdminHomeView extends StatefulWidget {
+  const AdminHomeView({Key? key}) : super(key: key);
 
   @override
-  State<AdminHome> createState() => _AdminHomeState();
+  State<AdminHomeView> createState() => _AdminHomeViewState();
 }
 
-class _AdminHomeState extends State<AdminHome> {
+class _AdminHomeViewState extends State<AdminHomeView> {
 
-  late String codeSended='17';
+/*  late String codeSended='17';*/
 
   List<Destination> destinationList = [];
   @override
   void initState() {
     super.initState();
-    fetchDestination();
+/*    fetchDestination();*/
   }
-
+/*
   Future<void> fetchDestination() async{
     String base_url='http://20.150.216.134:7070/api/v1/destinations';
     final url=Uri.parse(base_url);
@@ -46,7 +46,7 @@ class _AdminHomeState extends State<AdminHome> {
     }else {
       print('Request failed with status: ${response.statusCode}');
     }
-  }
+  }*/
 
 
   @override

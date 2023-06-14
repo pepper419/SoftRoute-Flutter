@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+
+  final String username;
+
+  CustomAppBar({required this.username});
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -27,7 +32,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                     width: 10,
                   ),
                   Text(
-                    'Welcome James!',
+                    'Welcome $username!',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.normal,

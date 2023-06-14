@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'administratorPage.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
@@ -24,13 +25,13 @@ class _LoginViewState extends State<LoginView> {
     });
   }
 
-  void _navigateToMainScreen() {
+  void _navigateToAdminScreen() {
     if (_isFormValid) {
       String username = _usernameController.text;
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => MainScreen(username: username),
+          builder: (context) => AdminPage(username: username),
         ),
       );
     } else {
@@ -123,7 +124,7 @@ class _LoginViewState extends State<LoginView> {
                               child: Text('Sign Up'),
                             ),
                             ElevatedButton(
-                              onPressed: _navigateToMainScreen,
+                              onPressed: _navigateToAdminScreen,
                               child: Text('Next'),
                             ),
                           ],
@@ -140,6 +141,7 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 }
+/*
 
 class MainScreen extends StatelessWidget {
   final String username;
@@ -179,4 +181,4 @@ class MainScreen extends StatelessWidget {
       ),
     );
   }
-}
+}*/

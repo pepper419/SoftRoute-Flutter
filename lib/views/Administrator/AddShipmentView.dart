@@ -1,18 +1,18 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import '../main.dart';
+import '../../main.dart';
 import 'package:http/http.dart' as http;
 
 
-class AddShipment extends StatefulWidget {
-  const AddShipment({Key? key}) : super(key: key);
+class AddShipmentView extends StatefulWidget {
+  const AddShipmentView({Key? key}) : super(key: key);
 
   @override
-  State<AddShipment> createState() => _AddShipmentState();
+  State<AddShipmentView> createState() => _AddShipmentViewState();
 }
 
-class _AddShipmentState extends State<AddShipment> {
+class _AddShipmentViewState extends State<AddShipmentView> {
   //sender
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();

@@ -35,7 +35,7 @@ class _ClientPageState extends State<ClientPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          appBar: CustomAppBar(),
+          appBar: CustomAppBar(username:"Client"),
           body:Padding(
             padding: const EdgeInsets.all(20),
             child: Column(
