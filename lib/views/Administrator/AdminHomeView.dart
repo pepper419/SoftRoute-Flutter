@@ -9,6 +9,8 @@ import '../../widgets/trackingCard.dart';
 import 'package:http/http.dart' as http;
 
 
+
+
 class AdminHomeView extends StatefulWidget {
   const AdminHomeView({Key? key}) : super(key: key);
 
@@ -18,15 +20,17 @@ class AdminHomeView extends StatefulWidget {
 
 class _AdminHomeViewState extends State<AdminHomeView> {
 
-/*  late String codeSended='17';*/
+  late String codeSended;
+  final code=TextEditingController();
 
   List<Destination> destinationList = [];
   @override
   void initState() {
     super.initState();
-/*    fetchDestination();*/
+    codeSended = '';
+    fetchDestination();
   }
-/*
+
   Future<void> fetchDestination() async{
     String base_url='http://20.150.216.134:7070/api/v1/destinations';
     final url=Uri.parse(base_url);
@@ -46,8 +50,13 @@ class _AdminHomeViewState extends State<AdminHomeView> {
     }else {
       print('Request failed with status: ${response.statusCode}');
     }
-  }*/
+  }
 
+  void updateSearchQuery(String query) {
+    setState(() {
+      codeSended = query;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,47 +66,53 @@ class _AdminHomeViewState extends State<AdminHomeView> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Row(
+            Column(
               children: [
-                Expanded(
-                  child: Container(
-                    height: 80,
-                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>ClientPage()));
+                TextField(
+                  controller: code,
+                  style: const TextStyle(color:Colors.white),
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: const Color(0xffC8A1FF),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: BorderSide.none
+                    ),
+                    hintText: "Enter tracking number",
+                    hintStyle: const TextStyle(
+                        color:Colors.white
+                    ),
+                    prefixIcon: IconButton(
+                      icon:Icon(Icons.search),
+                      color:Colors.white,
+                      onPressed: (){
+                        codeSended=code.text;
+                        updateSearchQuery(code.text);
+                        print("Boton presionado!");
                       },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFFC8A1FF),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Search Tracking',
-                            style: TextStyle(fontSize: 20),
-                          ),
-                          Icon(Icons.arrow_forward),
-                        ],
-                      ),
                     ),
                   ),
                 ),
+                SizedBox(height: 20,),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Tracking',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                TrackingCard(searchQuery: codeSended),
               ],
-
             ),
             SizedBox(height: 20),
-            Align(
+/*            Align(
               alignment: Alignment.centerLeft,
               child: Text(
                 'Tracking',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-            ),
-            TrackingCard(searchQuery: '17'),
+            ),*/
+/*            TrackingCard(searchQuery: '17'),*/
 
             SizedBox(height: 20),
             Align(

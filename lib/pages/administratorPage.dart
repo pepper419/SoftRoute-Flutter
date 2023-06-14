@@ -20,7 +20,6 @@ class AdminPage extends StatefulWidget {
 
 class _AdminPageState extends State<AdminPage> {
 
-
   final items=[
     Icon(Icons.home, color: Colors.white),
     Icon(Icons.book, color: Colors.white),
@@ -54,9 +53,6 @@ class _AdminPageState extends State<AdminPage> {
             animationDuration: Duration(milliseconds: 300),
           ),
           body: Container(
-/*          width: double.infinity,
-          height: double.infinity,
-          alignment: Alignment.center,*/
             child: getSelectedWidget(index:index),
           )
       ),
