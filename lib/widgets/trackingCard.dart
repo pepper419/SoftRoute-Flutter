@@ -118,7 +118,7 @@ class _TrackingCardState extends State<TrackingCard> {
   @override
   Widget build(BuildContext context) {
 
-    if (firstVisit) {
+    if (trackingData==null || (trackingData!.isEmpty && firstVisit)) {
       return Row( // Agregado: Envuelve el Card con Row
         children: [
           Expanded(

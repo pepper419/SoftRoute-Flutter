@@ -20,6 +20,7 @@ class AdminHomeView extends StatefulWidget {
 
 class _AdminHomeViewState extends State<AdminHomeView> {
 
+  String? previosSearchQuery;
   late String codeSended;
   final code=TextEditingController();
 
@@ -104,17 +105,7 @@ class _AdminHomeViewState extends State<AdminHomeView> {
                 TrackingCard(searchQuery: codeSended),
               ],
             ),
-            SizedBox(height: 20),
-/*            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                'Tracking',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            ),*/
-/*            TrackingCard(searchQuery: '17'),*/
-
-            SizedBox(height: 20),
+            SizedBox(height: 40),
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
