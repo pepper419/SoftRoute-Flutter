@@ -3,6 +3,9 @@ import 'package:example_souf_route/models/Destination.dart';
 import 'package:example_souf_route/widgets/destinationCard.dart';
 import 'package:flutter/material.dart';
 import '../main.dart';
+import '../pages/administratorPage.dart';
+import '../pages/clientPage.dart';
+import '../widgets/trackingCard.dart';
 import 'package:http/http.dart' as http;
 
 
@@ -43,7 +46,6 @@ class _AdminHomeState extends State<AdminHome> {
     }else {
       print('Request failed with status: ${response.statusCode}');
     }
-    print ('HOLAAAAAAAAA JULIAN TE AMO');
   }
 
 
