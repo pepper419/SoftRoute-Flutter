@@ -3,14 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class Consignee{
-  final String name;
-  final String address;
+  final int id;
   final String dni;
+  final String address;
+  final String name;
 
   Consignee({
+    required this.id,
+    required this.dni,
     required this.name,
     required this.address,
-    required this.dni
   });
 
 }

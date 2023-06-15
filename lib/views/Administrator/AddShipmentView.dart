@@ -37,8 +37,8 @@ class _AddShipmentViewState extends State<AddShipmentView> {
   List<Sender> senderInfo = []; // Lista de tipos de documento
   Sender? selectedSenderName;
 
-  List<String> consigneeName = ['']; // Consignee list name
-  String selectedConsigneeName = '';
+  List<Consignee> consigneeInfo = []; // Consignee list name
+  Consignee? selectedConsigneeName;
 
   List<String> destinationName = ['']; // Lista de tipos de documento
   String selectedDestinationName = '';
@@ -112,17 +112,18 @@ class _AddShipmentViewState extends State<AddShipmentView> {
     var response = await http.get(url);
     if (response.statusCode == 200) {
       final jsonData = jsonDecode(response.body);
-      List<String> consigneeNames = []; // Crear una lista de nombres de consignees
+      List<Consignee> consigneeInfos = []; // Crear una lista de nombres de consignees
       for (var item in jsonData) {
+        int id = item['id'];
+        String dni = item['dni'];
+        String address = item['address'];
         String name = item['name'];
-        consigneeNames.add(name);
+        Consignee consigneeInfo=Consignee(id: id, dni: dni, name: name, address: address);
+        consigneeInfos.add(consigneeInfo);
       }
       setState(() {
-        consigneeList = consigneeNames; // Asignar la lista de nombres de consignees a consigneeList
-        consigneeName=consigneeNames;
+        this.consigneeInfo=consigneeInfos;
       });
-      print(consigneeList);
-      print(consigneeName);
     } else {
       print('Request failed with status: ${response.statusCode}');
 
@@ -143,12 +144,10 @@ class _AddShipmentViewState extends State<AddShipmentView> {
         String email=item['email'];
         Sender senderInfo=Sender(id: id,name:name,email: email);
         senderInfos.add(senderInfo);
-        print('SI ENTRA JULIAN TE AMOO ${senderInfo}');
       }
       setState(() {
         this.senderInfo=senderInfos; // Asignar la lista de nombres de sender a senderName
       });
-      print('INFO JULIAN CASABLANCAS ${senderInfos}');
     } else {
       print('Request failed with status error: ${response.statusCode}');
 
@@ -380,21 +379,21 @@ class _AddShipmentViewState extends State<AddShipmentView> {
             ),
 
             SizedBox(height: 20),
-            DropdownButtonFormField<String>(
+            DropdownButtonFormField<Consignee>(
               decoration: InputDecoration(
                 labelText: 'Consignee',
               ),
               // value: selectedConsigneeName,
-              value:selectedConsigneeName = consigneeName.isNotEmpty ? consigneeName[0] : '',
+              value:selectedConsigneeName,
               onChanged: (value) {
                 setState(() {
                   selectedConsigneeName = value!;
                 });
               },
-              items: consigneeName.map((String type) {
-                return DropdownMenuItem<String>(
-                  value: type,
-                  child: Text(type),
+              items: consigneeInfo.map((Consignee consigneeInfo) {
+                return DropdownMenuItem<Consignee>(
+                  value: consigneeInfo,
+                  child: Text(consigneeInfo.name),
                 );
               }).toList(),
             ),
