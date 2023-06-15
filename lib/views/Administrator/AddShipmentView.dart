@@ -1,5 +1,8 @@
 import 'dart:convert';
+import 'dart:ffi';
 
+import 'package:example_souf_route/models/Sender.dart';
+import 'package:example_souf_route/models/TypeOfPackage.dart';
 import 'package:flutter/material.dart';
 import '../../main.dart';
 import 'package:http/http.dart' as http;
@@ -25,14 +28,14 @@ class _AddShipmentViewState extends State<AddShipmentView> {
   List<String> consigneeList = [];
 
   int currentStep=0;
-  List<String> packageTypes = ['']; // Lista de tipos de paquete
-  String selectedPackageType = '';
+  List<TypeOfPackage> packageTypes = []; // Lista de tipos de paquete
+  TypeOfPackage? selectedPackageType;
 
   List<String> documentType = ['']; // Lista de tipos de documento
   String selectedDocumentType = '';
 
-  List<String> senderName = ['']; // Lista de tipos de documento
-  String selectedSenderName = '';
+  List<Sender> senderInfo = []; // Lista de tipos de documento
+  Sender? selectedSenderName;
 
   List<String> consigneeName = ['']; // Consignee list name
   String selectedConsigneeName = '';
@@ -131,18 +134,23 @@ class _AddShipmentViewState extends State<AddShipmentView> {
     final url = Uri.parse(URL);
     var response = await http.get(url);
     if (response.statusCode == 200) {
+
       final jsonData = jsonDecode(response.body);
-      List<String> senderNames = []; // Crear una lista de nombres de consignees
+      List<Sender> senderInfos = []; // Crear una lista de nombres de consignees
       for (var item in jsonData) {
+        int id=item['id'];
         String name = item['name'];
-        senderNames.add(name);
+        String email=item['email'];
+        Sender senderInfo=Sender(id: id,name:name,email: email);
+        senderInfos.add(senderInfo);
+        print('SI ENTRA JULIAN TE AMOO ${senderInfo}');
       }
       setState(() {
-        senderName=senderNames; // Asignar la lista de nombres de sender a senderName
+        this.senderInfo=senderInfos; // Asignar la lista de nombres de sender a senderName
       });
-      print(senderName);
+      print('INFO JULIAN CASABLANCAS ${senderInfos}');
     } else {
-      print('Request failed with status: ${response.statusCode}');
+      print('Request failed with status error: ${response.statusCode}');
 
     }
   }
@@ -196,13 +204,15 @@ class _AddShipmentViewState extends State<AddShipmentView> {
     var response = await http.get(url);
     if (response.statusCode == 200) {
       final jsonData = jsonDecode(response.body);
-      List<String> packageNames = []; // Crear una lista de nombres de consignees
+      List<TypeOfPackage> packageTypes=[];
       for (var item in jsonData) {
         String name = item['name'];
-        packageNames.add(name);
+        int id = item['id'];
+        TypeOfPackage packageType = TypeOfPackage(name: name, id: id);
+        packageTypes.add(packageType);
       }
       setState(() {
-        packageTypes=packageNames; // Asignar la lista de nombres de sender a senderName
+        this.packageTypes=packageTypes; // Asignar la lista de nombres de sender a senderName
       });
       print(packageTypes);
     } else {
@@ -332,39 +342,39 @@ class _AddShipmentViewState extends State<AddShipmentView> {
         padding: EdgeInsets.all(20),
         child: Column(
           children: [
-            DropdownButtonFormField<String>(
+            DropdownButtonFormField<TypeOfPackage>(
               decoration: InputDecoration(
                 labelText: 'Package Type',
               ),
-              value: selectedPackageType=packageTypes.isNotEmpty? packageTypes[0]:'',
-              onChanged: (value) {
+              value: selectedPackageType,
+              onChanged: (TypeOfPackage? value) {
                 setState(() {
                   selectedPackageType = value!;
                 });
               },
-              items: packageTypes.map((String type) {
-                return DropdownMenuItem<String>(
-                  value: type,
-                  child: Text(type),
+              items: packageTypes.map((TypeOfPackage packageType) {
+                return DropdownMenuItem<TypeOfPackage>(
+                  value: packageType,
+                  child: Text(packageType.name),
                 );
               }).toList(),
             ),
 
             SizedBox(height: 20),
-            DropdownButtonFormField<String>(
+            DropdownButtonFormField<Sender>(
               decoration: InputDecoration(
                 labelText: 'Sender',
               ),
-              value: selectedSenderName=senderName.isNotEmpty?senderName[0]:'',
+              value: selectedSenderName,
               onChanged: (value) {
                 setState(() {
                   selectedSenderName = value!;
                 });
               },
-              items: senderName.map((String type) {
-                return DropdownMenuItem<String>(
-                  value: type,
-                  child: Text(type),
+              items: senderInfo.map((Sender senderInfo) {
+                return DropdownMenuItem<Sender>(
+                  value: senderInfo,
+                  child: Text(senderInfo.name),
                 );
               }).toList(),
             ),
