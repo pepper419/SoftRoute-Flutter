@@ -25,8 +25,8 @@ class _AddShipmentViewState extends State<AddShipmentView> {
   List<String> consigneeList = [];
 
   int currentStep=0;
-  List<String> packageTypes = ['Package 1', 'Package 2', 'Package 3']; // Lista de tipos de paquete
-  String selectedPackageType = 'Package 1';
+  List<String> packageTypes = ['']; // Lista de tipos de paquete
+  String selectedPackageType = '';
 
   List<String> documentType = ['']; // Lista de tipos de documento
   String selectedDocumentType = '';
@@ -190,6 +190,27 @@ class _AddShipmentViewState extends State<AddShipmentView> {
     }
   }
 
+  Future<void> getTypePackageName() async {
+    String URL = 'http://20.150.216.134:7070/api/v1/typeofpackage';
+    final url = Uri.parse(URL);
+    var response = await http.get(url);
+    if (response.statusCode == 200) {
+      final jsonData = jsonDecode(response.body);
+      List<String> packageNames = []; // Crear una lista de nombres de consignees
+      for (var item in jsonData) {
+        String name = item['name'];
+        packageNames.add(name);
+      }
+      setState(() {
+        packageTypes=packageNames; // Asignar la lista de nombres de sender a senderName
+      });
+      print(packageTypes);
+    } else {
+      print('Request failed with status: ${response.statusCode}');
+
+    }
+  }
+
 
   @override
   void dispose() {
@@ -215,6 +236,7 @@ class _AddShipmentViewState extends State<AddShipmentView> {
               postSender();
               getDestinationName();
               getDocumentType();
+              getTypePackageName();
             }
             if(isConsigneeStep){
               postConsignee();
@@ -314,7 +336,7 @@ class _AddShipmentViewState extends State<AddShipmentView> {
               decoration: InputDecoration(
                 labelText: 'Package Type',
               ),
-              value: selectedPackageType,
+              value: selectedPackageType=packageTypes.isNotEmpty? packageTypes[0]:'',
               onChanged: (value) {
                 setState(() {
                   selectedPackageType = value!;
