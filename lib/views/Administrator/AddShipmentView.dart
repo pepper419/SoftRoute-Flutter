@@ -1,10 +1,12 @@
 import 'dart:convert';
-import 'dart:ffi';
 
+
+import 'package:example_souf_route/models/Destination.dart';
+import 'package:example_souf_route/models/DocumentType.dart';
 import 'package:example_souf_route/models/Sender.dart';
 import 'package:example_souf_route/models/TypeOfPackage.dart';
 import 'package:flutter/material.dart';
-import '../../main.dart';
+
 import 'package:http/http.dart' as http;
 
 import '../../models/Consignee.dart';
@@ -25,14 +27,13 @@ class _AddShipmentViewState extends State<AddShipmentView> {
   TextEditingController nameConsigneeController=TextEditingController();
   TextEditingController dniConsigneeController=TextEditingController();
   TextEditingController addressConsigneeController=TextEditingController();
-  List<String> consigneeList = [];
 
   int currentStep=0;
   List<TypeOfPackage> packageTypes = []; // Lista de tipos de paquete
   TypeOfPackage? selectedPackageType;
 
-  List<String> documentType = ['']; // Lista de tipos de documento
-  String selectedDocumentType = '';
+  List<DocumentType> documentType = []; // Lista de tipos de documento
+  DocumentType? selectedDocumentType;
 
   List<Sender> senderInfo = []; // Lista de tipos de documento
   Sender? selectedSenderName;
@@ -40,8 +41,8 @@ class _AddShipmentViewState extends State<AddShipmentView> {
   List<Consignee> consigneeInfo = []; // Consignee list name
   Consignee? selectedConsigneeName;
 
-  List<String> destinationName = ['']; // Lista de tipos de documento
-  String selectedDestinationName = '';
+  List<Destination> destinationInfo = []; // Lista de tipos de documento
+  Destination? selectedDestinationName;
 
   void initState() {
     super.initState();
@@ -160,18 +161,18 @@ class _AddShipmentViewState extends State<AddShipmentView> {
     var response = await http.get(url);
     if (response.statusCode == 200) {
       final jsonData = jsonDecode(response.body);
-      List<String> destinationNames = []; // Crear una lista de nombres de consignees
+      List<Destination> destinationInfos = []; // Crear una lista de nombres de consignees
       for (var item in jsonData) {
+        int id  = item['id'];
         String name = item['name'];
-        destinationNames.add(name);
+        Destination destinationInfo=Destination(id: id, name: name);
+        destinationInfos.add(destinationInfo);
       }
       setState(() {
-        destinationName=destinationNames; // Asignar la lista de nombres de sender a senderName
+        this.destinationInfo=destinationInfos; // Asignar la lista de nombres de sender a senderName
       });
-      print(destinationName);
     } else {
       print('Request failed with status: ${response.statusCode}');
-
     }
   }
 
@@ -181,19 +182,18 @@ class _AddShipmentViewState extends State<AddShipmentView> {
     var response = await http.get(url);
     if (response.statusCode == 200) {
       final jsonData = jsonDecode(response.body);
-      List<String> documentTypes = []; // Crear una lista de nombres de document
+      List<DocumentType> documentTypes = []; // Crear una lista de nombres de document
       for (var item in jsonData) {
+        int id = item['id'];
         String name = item['name'];
-        documentTypes.add(name);
+        DocumentType documentType=DocumentType(id:id,name:name);
+        documentTypes.add(documentType);
       }
       setState(() {
-        documentType=documentTypes; // Asignar la lista de nombres de document a documentType
+        this.documentType=documentTypes; // Asignar la lista de nombres de document a documentType
       });
-      print(documentType);
     } else {
       print('Request failed with status: ${response.statusCode}');
-      print('JULIAN T AMOOOOOOOOOOOO');
-
     }
   }
 
@@ -444,39 +444,39 @@ class _AddShipmentViewState extends State<AddShipmentView> {
               },
             ),
             SizedBox(height: 20),
-            DropdownButtonFormField<String>(
+            DropdownButtonFormField<Destination>(
               decoration: InputDecoration(
                 labelText: 'Destination',
               ),
-              value: selectedDestinationName=destinationName.isNotEmpty? destinationName[0]:'',
+              value: selectedDestinationName,
               onChanged: (value) {
                 setState(() {
                   selectedDestinationName = value!;
                 });
               },
-              items: destinationName.map((String type) {
-                return DropdownMenuItem<String>(
-                  value: type,
-                  child: Text(type),
+              items: destinationInfo.map((Destination destinationInfo) {
+                return DropdownMenuItem<Destination>(
+                  value: destinationInfo,
+                  child: Text(destinationInfo.name),
                 );
               }).toList(),
             ),
 
             SizedBox(height: 20),
-            DropdownButtonFormField<String>(
+            DropdownButtonFormField<DocumentType>(
               decoration: InputDecoration(
                 labelText: 'Document Type',
               ),
-              value: selectedDocumentType=documentType.isNotEmpty? documentType[0]:'',
+              value: selectedDocumentType,
               onChanged: (value) {
                 setState(() {
                   selectedDocumentType = value!;
                 });
               },
-              items: documentType.map((String type) {
-                return DropdownMenuItem<String>(
-                  value: type,
-                  child: Text(type),
+              items: documentType.map((DocumentType documentType) {
+                return DropdownMenuItem<DocumentType>(
+                  value: documentType,
+                  child: Text(documentType.name),
                 );
               }).toList(),
             ),
