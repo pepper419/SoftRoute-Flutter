@@ -31,24 +31,23 @@ class _AddShipmentViewState extends State<AddShipmentView> {
   List<String> documentTypes = ['Document 1', 'Document 2', 'Document 3']; // Lista de tipos de documento
   String selectedDocumentType = 'Document 1';
 
-  List<String> senderName = ['Sender 1', 'Sender 2', 'Sender 3']; // Lista de tipos de documento
-  String selectedSenderName = 'Sender 1';
+  List<String> senderName = ['']; // Lista de tipos de documento
+  String selectedSenderName = '';
 
-  List<String> consigneeName = ['Luis Miguel']; // Lista de tipos de documento
+  List<String> consigneeName = ['']; // Consignee list name
   String selectedConsigneeName = '';
+
+  List<String> destinationName = ['destino']; // Lista de tipos de documento
+  String selectedDestinationName = 'destino';
 
   void initState() {
     super.initState();
-    getConsigneer();
-    selectedConsigneeName = consigneeName[0].toString();
-    // Aquí puedes realizar la lógica para obtener los nombres de consignee y asignarlos a consigneeName
-    // consigneeName = ['Luis Miguel'];
-    selectedConsigneeName = consigneeName.isNotEmpty ? consigneeName[0] : '';
+    getConsigneerName();
+    getSenderName();
   }
 
 
-  List<String> destinationName = ['Destination 1', 'Destination 2', 'Destination 3']; // Lista de tipos de documento
-  String selectedDestinationName = 'Destination 1';
+
 
   Future<void> postSender()async{
     String base_url = 'http://20.150.216.134:7070/api/v1/sender';
@@ -104,7 +103,7 @@ class _AddShipmentViewState extends State<AddShipmentView> {
 
   }
 
-  Future<void> getConsigneer() async {
+  Future<void> getConsigneerName() async {
     String URL = 'http://20.150.216.134:7070/api/v1/consignees';
     final url = Uri.parse(URL);
     var response = await http.get(url);
@@ -126,6 +125,29 @@ class _AddShipmentViewState extends State<AddShipmentView> {
 
     }
   }
+
+  Future<void> getSenderName() async {
+    String URL = 'http://20.150.216.134:7070/api/v1/sender';
+    final url = Uri.parse(URL);
+    var response = await http.get(url);
+    if (response.statusCode == 200) {
+      final jsonData = jsonDecode(response.body);
+      List<String> senderNames = []; // Crear una lista de nombres de consignees
+      for (var item in jsonData) {
+        String name = item['name'];
+        senderNames.add(name);
+      }
+      setState(() {
+        senderName=senderNames; // Asignar la lista de nombres de sender a senderName
+      });
+      print(senderName);
+    } else {
+      print('Request failed with status: ${response.statusCode}');
+
+    }
+  }
+
+
 
   @override
   void dispose() {
@@ -152,8 +174,8 @@ class _AddShipmentViewState extends State<AddShipmentView> {
             }
             if(isConsigneeStep){
               postConsignee();
-              getConsigneer();
-
+              getConsigneerName();
+              getSenderName();
             }
             if(isLastStep){
               print('complete');
@@ -180,7 +202,7 @@ class _AddShipmentViewState extends State<AddShipmentView> {
                 labelText: 'Name',
               ),
               onChanged: (value) {
-                // Aquí puedes guardar el valor del nombre en alguna variable
+
               },
             ),
             SizedBox(height: 20),
@@ -190,7 +212,7 @@ class _AddShipmentViewState extends State<AddShipmentView> {
                 labelText: 'Email',
               ),
               onChanged: (value) {
-                // Aquí puedes guardar el valor del correo electrónico en alguna variable
+
               },
             ),
           ],
@@ -210,7 +232,7 @@ class _AddShipmentViewState extends State<AddShipmentView> {
                   labelText: 'Name',
                 ),
                 onChanged: (value) {
-                  // Aquí puedes guardar el valor del nombre en alguna variable
+
                 },
               ),
               SizedBox(height: 20),
@@ -220,7 +242,7 @@ class _AddShipmentViewState extends State<AddShipmentView> {
                   labelText: 'DNI',
                 ),
                 onChanged: (value) {
-                  // Aquí puedes guardar el valor del correo electrónico en alguna variable
+
                 },
               ),
               SizedBox(height: 20),
@@ -230,7 +252,7 @@ class _AddShipmentViewState extends State<AddShipmentView> {
                   labelText: 'Address',
                 ),
                 onChanged: (value) {
-                  // Aquí puedes guardar el valor del correo electrónico en alguna variable
+
                 },
               ),
             ],
@@ -267,7 +289,7 @@ class _AddShipmentViewState extends State<AddShipmentView> {
               decoration: InputDecoration(
                 labelText: 'Sender',
               ),
-              value: selectedSenderName,
+              value: selectedSenderName=senderName.isNotEmpty?senderName[0]:'',
               onChanged: (value) {
                 setState(() {
                   selectedSenderName = value!;
@@ -286,7 +308,8 @@ class _AddShipmentViewState extends State<AddShipmentView> {
               decoration: InputDecoration(
                 labelText: 'Consignee',
               ),
-              value: selectedConsigneeName,
+              // value: selectedConsigneeName,
+              value:selectedConsigneeName = consigneeName.isNotEmpty ? consigneeName[0] : '',
               onChanged: (value) {
                 setState(() {
                   selectedConsigneeName = value!;
@@ -348,9 +371,9 @@ class _AddShipmentViewState extends State<AddShipmentView> {
             SizedBox(height: 20),
             DropdownButtonFormField<String>(
               decoration: InputDecoration(
-                labelText: 'Document Type',
+                labelText: 'Destination',
               ),
-              value: selectedDestinationName,
+              value: selectedDestinationName=destinationName.isNotEmpty? destinationName[0]:'',
               onChanged: (value) {
                 setState(() {
                   selectedDestinationName = value!;
