@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import '../../main.dart';
 import 'package:http/http.dart' as http;
 
+import '../../models/Consignee.dart';
+
 
 class AddShipmentView extends StatefulWidget {
   const AddShipmentView({Key? key}) : super(key: key);
@@ -20,6 +22,7 @@ class _AddShipmentViewState extends State<AddShipmentView> {
   TextEditingController nameConsigneeController=TextEditingController();
   TextEditingController dniConsigneeController=TextEditingController();
   TextEditingController addressConsigneeController=TextEditingController();
+  List<String> consigneeList = [];
 
   int currentStep=0;
   List<String> packageTypes = ['Package 1', 'Package 2', 'Package 3']; // Lista de tipos de paquete
@@ -31,8 +34,18 @@ class _AddShipmentViewState extends State<AddShipmentView> {
   List<String> senderName = ['Sender 1', 'Sender 2', 'Sender 3']; // Lista de tipos de documento
   String selectedSenderName = 'Sender 1';
 
-  List<String> consigneeName = ['Consignee 1', 'Consignee 2', 'Consignee 3']; // Lista de tipos de documento
-  String selectedConsigneeName = 'Consignee 1';
+  List<String> consigneeName = ['Luis Miguel']; // Lista de tipos de documento
+  String selectedConsigneeName = '';
+
+  void initState() {
+    super.initState();
+    getConsigneer();
+    selectedConsigneeName = consigneeName[0].toString();
+    // Aquí puedes realizar la lógica para obtener los nombres de consignee y asignarlos a consigneeName
+    // consigneeName = ['Luis Miguel'];
+    selectedConsigneeName = consigneeName.isNotEmpty ? consigneeName[0] : '';
+  }
+
 
   List<String> destinationName = ['Destination 1', 'Destination 2', 'Destination 3']; // Lista de tipos de documento
   String selectedDestinationName = 'Destination 1';
@@ -91,6 +104,29 @@ class _AddShipmentViewState extends State<AddShipmentView> {
 
   }
 
+  Future<void> getConsigneer() async {
+    String URL = 'http://20.150.216.134:7070/api/v1/consignees';
+    final url = Uri.parse(URL);
+    var response = await http.get(url);
+    if (response.statusCode == 200) {
+      final jsonData = jsonDecode(response.body);
+      List<String> consigneeNames = []; // Crear una lista de nombres de consignees
+      for (var item in jsonData) {
+        String name = item['name'];
+        consigneeNames.add(name);
+      }
+      setState(() {
+        consigneeList = consigneeNames; // Asignar la lista de nombres de consignees a consigneeList
+        consigneeName=consigneeNames;
+      });
+      print(consigneeList);
+      print(consigneeName);
+    } else {
+      print('Request failed with status: ${response.statusCode}');
+
+    }
+  }
+
   @override
   void dispose() {
     nameController.dispose();
@@ -116,6 +152,8 @@ class _AddShipmentViewState extends State<AddShipmentView> {
             }
             if(isConsigneeStep){
               postConsignee();
+              getConsigneer();
+
             }
             if(isLastStep){
               print('complete');

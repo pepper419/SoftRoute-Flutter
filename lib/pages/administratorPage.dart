@@ -66,10 +66,10 @@ class _AdminPageState extends State<AdminPage> {
         widget= AdminHomeView();
         break;
       case 1:
-        widget= AddShipmentView();
+        widget= AdminHomeView();
         break;
       default:
-        widget= AdminHomeView();
+        widget= AddShipmentView();
         break;
     }
     return widget;
