@@ -147,6 +147,26 @@ class _AddShipmentViewState extends State<AddShipmentView> {
     }
   }
 
+  Future<void> getDestinationName() async {
+    String URL = 'http://20.150.216.134:7070/api/v1/destinations';
+    final url = Uri.parse(URL);
+    var response = await http.get(url);
+    if (response.statusCode == 200) {
+      final jsonData = jsonDecode(response.body);
+      List<String> destinationNames = []; // Crear una lista de nombres de consignees
+      for (var item in jsonData) {
+        String name = item['name'];
+        destinationNames.add(name);
+      }
+      setState(() {
+        destinationName=destinationNames; // Asignar la lista de nombres de sender a senderName
+      });
+      print(destinationName);
+    } else {
+      print('Request failed with status: ${response.statusCode}');
+
+    }
+  }
 
 
   @override
@@ -171,6 +191,7 @@ class _AddShipmentViewState extends State<AddShipmentView> {
 
             if(isSenderStep){
               postSender();
+              getDestinationName();
             }
             if(isConsigneeStep){
               postConsignee();
