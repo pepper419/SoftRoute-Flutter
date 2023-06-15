@@ -28,8 +28,8 @@ class _AddShipmentViewState extends State<AddShipmentView> {
   List<String> packageTypes = ['Package 1', 'Package 2', 'Package 3']; // Lista de tipos de paquete
   String selectedPackageType = 'Package 1';
 
-  List<String> documentTypes = ['Document 1', 'Document 2', 'Document 3']; // Lista de tipos de documento
-  String selectedDocumentType = 'Document 1';
+  List<String> documentType = ['']; // Lista de tipos de documento
+  String selectedDocumentType = '';
 
   List<String> senderName = ['']; // Lista de tipos de documento
   String selectedSenderName = '';
@@ -37,8 +37,8 @@ class _AddShipmentViewState extends State<AddShipmentView> {
   List<String> consigneeName = ['']; // Consignee list name
   String selectedConsigneeName = '';
 
-  List<String> destinationName = ['destino']; // Lista de tipos de documento
-  String selectedDestinationName = 'destino';
+  List<String> destinationName = ['']; // Lista de tipos de documento
+  String selectedDestinationName = '';
 
   void initState() {
     super.initState();
@@ -168,6 +168,28 @@ class _AddShipmentViewState extends State<AddShipmentView> {
     }
   }
 
+  Future<void> getDocumentType() async {
+    String URL = 'http://20.150.216.134:7070/api/v1/documents';
+    final url = Uri.parse(URL);
+    var response = await http.get(url);
+    if (response.statusCode == 200) {
+      final jsonData = jsonDecode(response.body);
+      List<String> documentTypes = []; // Crear una lista de nombres de document
+      for (var item in jsonData) {
+        String name = item['name'];
+        documentTypes.add(name);
+      }
+      setState(() {
+        documentType=documentTypes; // Asignar la lista de nombres de document a documentType
+      });
+      print(documentType);
+    } else {
+      print('Request failed with status: ${response.statusCode}');
+      print('JULIAN T AMOOOOOOOOOOOO');
+
+    }
+  }
+
 
   @override
   void dispose() {
@@ -192,6 +214,7 @@ class _AddShipmentViewState extends State<AddShipmentView> {
             if(isSenderStep){
               postSender();
               getDestinationName();
+              getDocumentType();
             }
             if(isConsigneeStep){
               postConsignee();
@@ -413,13 +436,13 @@ class _AddShipmentViewState extends State<AddShipmentView> {
               decoration: InputDecoration(
                 labelText: 'Document Type',
               ),
-              value: selectedDocumentType,
+              value: selectedDocumentType=documentType.isNotEmpty? documentType[0]:'',
               onChanged: (value) {
                 setState(() {
                   selectedDocumentType = value!;
                 });
               },
-              items: documentTypes.map((String type) {
+              items: documentType.map((String type) {
                 return DropdownMenuItem<String>(
                   value: type,
                   child: Text(type),
