@@ -11,14 +11,14 @@ class Shipment {
   final int documentId;
 
   Shipment(
-      this.description,
-      this.quantity,
-      this.freight,
-      this.weight,
-      this.date,
-      this.destinyId,
-      this.consigneesId,
-      this.senderId,
-      this.typeOfPackageId,
-      this.documentId);
+      {required this.description,
+      required this.quantity,
+      required this.freight,
+      required this.weight,
+      required this.date,
+      required this.destinyId,
+      required this.consigneesId,
+      required this.senderId,
+      required this.typeOfPackageId,
+      required this.documentId});
 }
