@@ -11,9 +11,6 @@ class _ListShipmentViewState extends State<ListShipmentView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Titulo"),
-      ),
       body: Center(),
     );
   }
