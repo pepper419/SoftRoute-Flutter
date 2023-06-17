@@ -51,9 +51,12 @@ class _ListShipmentViewState extends State<ListShipmentView> {
       body: ListView.builder(
           itemCount: shipments == null ? 0 : shipments?.length,
           itemBuilder: (context, index) {
-            return ListTile(
-              title: Text(shipments[index].description),
-              subtitle: Text(shipments[index].date),
+            return Card(
+                color: Color(0xFFFFFFFF),
+              child: ListTile(
+                title: Text(shipments[index].description),
+                subtitle: Text(shipments[index].date),
+              ),
             );
           }),
     );
