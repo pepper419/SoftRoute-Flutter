@@ -19,8 +19,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: "Soft Route App",
       debugShowCheckedModeBanner: false,
-      home:AddCommentView(),
-      //HomePage(),
+      home:HomePage(),
     );
   }
 }
