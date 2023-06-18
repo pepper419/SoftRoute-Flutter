@@ -6,6 +6,7 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import '../widgets/appBar.dart';
 import '../views/Administrator/AddShipmentView.dart';
 import '../views/Administrator/AdminHomeView.dart';
+import '../views/Administrator/ListShipmentView.dart';
 
 
 class AdminPage extends StatefulWidget {
@@ -66,7 +67,7 @@ class _AdminPageState extends State<AdminPage> {
         widget= AdminHomeView();
         break;
       case 1:
-        widget= AdminHomeView();
+        widget= ListShipmentView();
         break;
       default:
         widget= AddShipmentView();
