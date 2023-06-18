@@ -2,13 +2,13 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-class FeedbackCliente {
+class FeedbackClient {
   String date;
   String description;
   int typeOfComplaintId;
   int shipmentId;
 
-  FeedbackCliente({
+  FeedbackClient({
     required this.date,
     required this.description,
     required this.typeOfComplaintId,

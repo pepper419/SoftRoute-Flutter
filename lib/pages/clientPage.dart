@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:example_souf_route/views/Client/AddCommentView.dart';
+import 'package:example_souf_route/views/Client/ClientHomeView.dart';
 import 'package:flutter/material.dart';
 import '../main.dart';
 import 'package:http/http.dart' as http;
@@ -56,40 +57,8 @@ class _ClientPageState extends State<ClientPage> {
             },
             animationDuration: Duration(milliseconds: 300),
           ),
-          body:Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              children: [
-                TextField(
-                  controller: code,
-                  style: const TextStyle(color:Colors.white),
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: const Color(0xffC8A1FF),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                        borderSide: BorderSide.none
-                    ),
-                    hintText: "Enter tracking number",
-                    hintStyle: const TextStyle(
-                        color:Colors.white
-                    ),
-                    prefixIcon: IconButton(
-                      icon:Icon(Icons.search),
-                      color:Colors.white,
-                      onPressed: (){
-                        codeSended=code.text;
-                        updateSearchQuery(code.text);
-                        print("Boton presionado!");
-                      },
-                    ),
-                  ),
-                ),
-                SizedBox(height: 20,),
-                Text("Tracking"),
-                TrackingCard(searchQuery: codeSended),
-              ],
-            ),
+          body:Container(
+            child: getSelectedWidgetClient(index:index),
           )
       ),
     );
@@ -98,13 +67,13 @@ class _ClientPageState extends State<ClientPage> {
     Widget widget;
     switch(index){
       case 0:
-        widget= ClientPage();
+        widget= ClientHome();
         break;
       case 1:
         widget=AddCommentView() ;
         break;
       default:
-        widget= AddCommentView();
+        widget= ClientHome();
         break;
     }
     return widget;
