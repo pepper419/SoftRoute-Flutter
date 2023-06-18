@@ -1,4 +1,5 @@
 class Shipment {
+  final int id;
   final String description;
   final int quantity;
   final int freight;
@@ -11,14 +12,17 @@ class Shipment {
   final int documentId;
 
   Shipment(
-      {required this.description,
-      required this.quantity,
-      required this.freight,
-      required this.weight,
-      required this.date,
-      required this.destinyId,
-      required this.consigneesId,
-      required this.senderId,
-      required this.typeOfPackageId,
-      required this.documentId});
+      {
+        required this.id,
+        required this.description,
+        required this.quantity,
+        required this.freight,
+        required this.weight,
+        required this.date,
+        required this.destinyId,
+        required this.consigneesId,
+        required this.senderId,
+        required this.typeOfPackageId,
+        required this.documentId
+      });
 }

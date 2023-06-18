@@ -23,6 +23,7 @@ class _ListShipmentViewState extends State<ListShipmentView> {
       setState(() {
         shipments = data
             .map((json) => Shipment(
+                id: json['id'],
                 description: json['description'],
                 quantity: json['quantity'],
                 freight: json['freight'],
