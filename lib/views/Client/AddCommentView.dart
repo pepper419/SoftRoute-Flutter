@@ -33,8 +33,22 @@ class _AddCommentViewState extends State<AddCommentView> {
             ),),
           ),
           const SizedBox(height: 20),
-
-
+          RatingBar.builder(
+            initialRating: 0,
+            minRating: 1,
+            direction: Axis.horizontal,
+            allowHalfRating: true,
+            itemCount: 5,
+            itemSize: 30,
+            itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+            itemBuilder: (context, _) => const Icon(
+              Icons.star,
+              color:Color(0xffC8A1FF),
+            ),
+            onRatingUpdate: (rating) {
+              print(rating);
+            },
+          ),
           Row(
             children: [
               Expanded(
@@ -47,7 +61,7 @@ class _AddCommentViewState extends State<AddCommentView> {
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(width:3,color:Color(0xffC8A1FF))
+                        borderSide: BorderSide(width:1,color:Color(0xffC8A1FF))
                     ),
                   ),
                   value: selectedItem,
@@ -67,28 +81,38 @@ class _AddCommentViewState extends State<AddCommentView> {
           TextField(
             decoration: InputDecoration(
               filled: true,
-              fillColor: const Color(0xffC8A1FF),
               border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
                   borderSide: BorderSide.none
               ),
-              contentPadding: EdgeInsets.symmetric(vertical: 30),
+              focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: BorderSide(width:1,color:Color(0xFFC8A1FF))
+              ),
+              contentPadding: EdgeInsets.symmetric(vertical: 35),
               hintText: " Add feedback",
               hintStyle: const TextStyle(
-                  color:Colors.white
+                  color:Colors.black,
               ),
             ),
           ),
           const SizedBox(height: 20,),
-          ElevatedButton(
-            onPressed: (){
-              //agregar accion al boton
-            },
-            child: const Text("Send"),
-            style: ElevatedButton.styleFrom(
-              primary: const Color(0xffC8A1FF),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0)
+          Align(
+            alignment: Alignment.centerRight,
+            child: Container(
+              width: 150,
+              height: 40,
+              child: ElevatedButton(
+                onPressed: (){
+                  //agregar accion al boton
+                },
+                child: const Text("Send"),
+                style: ElevatedButton.styleFrom(
+                  primary: const Color(0xffC8A1FF),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0)
+                  ),
+                ),
               ),
             ),
           )
