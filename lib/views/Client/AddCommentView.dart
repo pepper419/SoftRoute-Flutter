@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smooth_star_rating_null_safety/smooth_star_rating_null_safety.dart';
 
 class AddCommentView extends StatefulWidget {
   const AddCommentView({super.key});
@@ -32,7 +33,8 @@ class _AddCommentViewState extends State<AddCommentView> {
                 fontWeight: FontWeight.bold
             ),),
           ),
-          const SizedBox(height: 20,),
+          const SizedBox(height: 20),
+
           Row(
             children: [
               Expanded(
