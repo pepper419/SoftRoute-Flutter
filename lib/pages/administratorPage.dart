@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import '../main.dart';
 import 'package:http/http.dart' as http;
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import '../views/Administrator/DeliveriesView.dart';
 import '../widgets/appBar.dart';
 import '../views/Administrator/AddShipmentView.dart';
 import '../views/Administrator/AdminHomeView.dart';
@@ -118,8 +117,29 @@ class NavigationDrawer extends StatelessWidget {
   }
 
   Widget buildHeader(BuildContext context)=> Container(
-    padding: EdgeInsets.only(
-      top: MediaQuery.of(context).padding.top,
+    color: Color(0xff6200EE),
+      padding: EdgeInsets.only(
+      top: 24+MediaQuery.of(context).padding.top ,
+      bottom: 24,
+    ),
+    child: Column(
+      children: const [
+        CircleAvatar(
+          radius:52,
+          backgroundImage: NetworkImage(
+              "https://pm1.aminoapps.com/6503/a6fa68b88ce479e7352ad253f294e5f4d8b4c36a_hq.jpg"
+          ),
+        ),
+        SizedBox(height: 12),
+        Text(
+          'Administrator',
+          style: TextStyle(
+            fontSize: 23,
+            fontWeight: FontWeight.normal,
+            color: Colors.white,
+          ),
+        ),
+      ],
     ),
   );
 
@@ -135,25 +155,6 @@ class NavigationDrawer extends StatelessWidget {
 /*            Navigator.popUntil(context, ModalRoute.withName('/home')); // Regresar a la página principal*/
             onTabTapped(0); // Establecer la pantalla de inicio como seleccionada en el bottomNavigationBar
             Navigator.pop(context); // Cerrar el drawer
-          },
-        ),
-        ListTile(
-          leading: const Icon(Icons.car_rental),
-          title: const Text('Deliveries'),
-          onTap: () {
-            Navigator.pop(context);
-            Navigator.of(context).push(
-              PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) => DeliveriesView(),
-                transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                  return FadeTransition(
-                    opacity: animation,
-                    child: child,
-                  );
-                },
-                transitionDuration: const Duration(milliseconds: 500),
-              ),
-            );
           },
         ),
         ListTile(
