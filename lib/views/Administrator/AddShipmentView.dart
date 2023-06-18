@@ -328,14 +328,14 @@ class _AddShipmentViewState extends State<AddShipmentView> {
                         actions: [
                           TextButton(
                             onPressed: () {
-                              Navigator.of(context).pop(); // Cerrar el cuadro de diálogo
+                              Navigator.of(context).pop();
                             },
                             child: Text('Cancelar'),
                           ),
                           TextButton(
                             onPressed: () {
-                              postShipment(); // Enviar el formulario
-                              Navigator.of(context).pop(); // Cerrar el cuadro de diálogo
+                              postShipment();
+                              Navigator.of(context).pop();
                               Future.delayed(Duration(milliseconds: 300), () {
                                 Navigator.pushReplacement(
                                   context,
