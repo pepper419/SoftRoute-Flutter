@@ -78,7 +78,19 @@ class HomePage extends StatelessWidget {
                   height: 50, // <-- Your height
                   child:
                   ElevatedButton(onPressed: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>ClientPage()));
+/*                    Navigator.push(context, MaterialPageRoute(builder: (context)=>ClientPage()));*/
+                    Navigator.of(context).push(
+                      PageRouteBuilder(
+                        pageBuilder: (context, animation, secondaryAnimation) => ClientPage(),
+                        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                          return FadeTransition(
+                            opacity: animation,
+                            child: child,
+                          );
+                        },
+                        transitionDuration: const Duration(milliseconds: 500),
+                      ),
+                    );
                   },child: Text("CLIENT"),
                     style: ButtonStyle(
                         backgroundColor: MaterialStatePropertyAll<Color>(Color(0xFF6200EE)),

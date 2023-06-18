@@ -1,13 +1,14 @@
 import 'dart:convert';
+import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-class Destination {
-  final int id;
+class TypeOfPackage{
   final String name;
+  final int id;
 
-  Destination({
-    required this.id,
+  TypeOfPackage({
     required this.name,
-  });
+    required this.id
+});
 }

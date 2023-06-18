@@ -41,6 +41,7 @@ class _AdminHomeViewState extends State<AdminHomeView> {
       List<Destination> destinations = [];
       for (var item in jsonData) {
         Destination destination = Destination(
+            id:item['id'],
             name: item['name']
         );
         destinations.add(destination);
@@ -120,7 +121,7 @@ class _AdminHomeViewState extends State<AdminHomeView> {
                 itemCount: destinationList.length,
                 itemBuilder: (BuildContext context, int index) {
                   return DestinationCard(
-                    name: destinationList[index].name,
+                    name: destinationList[index].name.toString(),
                   );
                 },
               ),
