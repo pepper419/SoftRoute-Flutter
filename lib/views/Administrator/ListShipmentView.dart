@@ -68,8 +68,9 @@ class _ListShipmentViewState extends State<ListShipmentView> {
                         Text('Cantidad:'+ shipments[index].quantity.toString()),
                       ],
                     ),
+                    trailing: Icon(Icons.edit ),
                 onTap: (){
-                      
+
                 },
                   ),
               );
