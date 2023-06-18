@@ -28,6 +28,13 @@ class _AddShipmentViewState extends State<AddShipmentView> {
   TextEditingController dniConsigneeController=TextEditingController();
   TextEditingController addressConsigneeController=TextEditingController();
 
+  //Shipment
+  TextEditingController weightShipmentController=TextEditingController();
+  TextEditingController quantityShipmentController=TextEditingController();
+  TextEditingController freightShipmentController=TextEditingController();
+  TextEditingController dateShipmentController=TextEditingController();
+  TextEditingController descriptionShipmentController=TextEditingController();
+
   int currentStep=0;
   List<TypeOfPackage> packageTypes = []; // Lista de tipos de paquete
   TypeOfPackage? selectedPackageType;
@@ -52,6 +59,48 @@ class _AddShipmentViewState extends State<AddShipmentView> {
 
 
 
+  Future<void> postShipment()async{
+    String URL='http://20.150.216.134:7070/api/v1/shipments';
+    int? selectedPackageId=selectedPackageType?.id;
+    int? selectedSenderId=selectedSenderName?.id;
+    int? selectedConsigneeId=selectedConsigneeName?.id;
+    int? selectedDestinationId=selectedDestinationName?.id;
+    int? selectedDocumentId=selectedDocumentType?.id;
+    //input text
+    String weight=weightShipmentController.text;
+    String quantity =quantityShipmentController.text;
+    String freight =quantityShipmentController.text;
+    String date =dateShipmentController.text;
+    String description=descriptionShipmentController.text;
+
+    final url=Uri.parse(URL);
+    var response =await http.post(
+      url,
+      headers: {
+        'Content-Type':'application/json',
+      },
+      body: json.encode({
+        'description':description,
+        'quantity':int.parse(quantity),
+        'freight':int.parse(freight),
+        'weight':int.parse(weight),
+        'date':date,
+        'destinyId':selectedDestinationId,
+        'consigneesId':selectedConsigneeId,
+        'senderId':selectedSenderId,
+        'typeOfPackageId':selectedPackageId,
+        'documentId':selectedDocumentId
+      })
+    );
+
+    if(response.statusCode==200){
+      print('POST successfully completed');
+    }else{
+      print('POST request failed: ${response.statusCode}');
+    }
+    print('JULIAN TE AMO AAAA');
+
+  }
 
   Future<void> postSender()async{
     String base_url = 'http://20.150.216.134:7070/api/v1/sender';
@@ -253,7 +302,7 @@ class _AddShipmentViewState extends State<AddShipmentView> {
               getSenderName();
             }
             if(isLastStep){
-              print('complete');
+              postShipment();
             }else{
               setState(()=>currentStep+=1);
             }
@@ -400,6 +449,7 @@ class _AddShipmentViewState extends State<AddShipmentView> {
 
             SizedBox(height: 20),
             TextField(
+              controller: weightShipmentController,
               decoration: InputDecoration(
                 labelText: 'Weight',
               ),
@@ -409,6 +459,7 @@ class _AddShipmentViewState extends State<AddShipmentView> {
             ),
             SizedBox(height: 20),
             TextField(
+              controller: quantityShipmentController,
               decoration: InputDecoration(
                 labelText: 'Quantity',
               ),
@@ -418,6 +469,7 @@ class _AddShipmentViewState extends State<AddShipmentView> {
             ),
             SizedBox(height: 20),
             TextField(
+              controller: freightShipmentController,
               decoration: InputDecoration(
                 labelText: 'Freight',
               ),
@@ -427,6 +479,7 @@ class _AddShipmentViewState extends State<AddShipmentView> {
             ),
             SizedBox(height: 20),
             TextField(
+              controller: dateShipmentController,
               decoration: InputDecoration(
                 labelText: 'Date',
               ),
@@ -436,6 +489,7 @@ class _AddShipmentViewState extends State<AddShipmentView> {
             ),
             SizedBox(height: 20),
             TextField(
+              controller: descriptionShipmentController,
               decoration: InputDecoration(
                 labelText: 'Description',
               ),
@@ -480,6 +534,8 @@ class _AddShipmentViewState extends State<AddShipmentView> {
                 );
               }).toList(),
             ),
+
+
 
           ],
         ),
