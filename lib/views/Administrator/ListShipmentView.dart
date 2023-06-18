@@ -16,7 +16,7 @@ class _ListShipmentViewState extends State<ListShipmentView> {
 
   Future<void> fetchShipments() async {
     final response = await http
-        .get(Uri.parse('http://20.150.216.134:7070/api/v1/shipments'));
+        .get(Uri.parse(url));
 
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body);
@@ -53,12 +53,26 @@ class _ListShipmentViewState extends State<ListShipmentView> {
           itemCount: shipments == null ? 0 : shipments?.length,
           itemBuilder: (context, index) {
             return Card(
-                color: Color(0xFFFFFFFF),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              color: Color(0xFFF0E5FF),
+              margin: EdgeInsets.all(5),
+              elevation: 10,
               child: ListTile(
-                title: Text(shipments[index].description),
-                subtitle: Text(shipments[index].date),
-              ),
-            );
+                    title: Text(shipments[index].description),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget> [
+                        Text('Fecha: '+ shipments[index].date),
+                        Text('Flete: '+ shipments[index].freight.toString() ),
+                        Text('Peso: '+ shipments[index].weight.toString()),
+                        Text('Cantidad:'+ shipments[index].quantity.toString()),
+                      ],
+                    ),
+                onTap: (){
+                      
+                },
+                  ),
+              );
           }),
     );
   }
