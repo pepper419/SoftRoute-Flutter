@@ -11,7 +11,7 @@ import '../widgets/trackingCard.dart';
 
 class ClientPage extends StatefulWidget {
 
- // final String username;
+  // final String username;
   //ClientPage({required this.username});
 
   @override
@@ -45,41 +45,20 @@ class _ClientPageState extends State<ClientPage> {
     return SafeArea(
       child: Scaffold(
           appBar: CustomAppBar(username: "Client"),
-          body: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              children: [
-                TextField(
-                  controller: code,
-                  style: const TextStyle(color: Colors.white),
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: const Color(0xffC8A1FF),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                        borderSide: BorderSide.none
-                    ),
-                    hintText: "Enter tracking number",
-                    hintStyle: const TextStyle(
-                        color: Colors.white
-                    ),
-                    prefixIcon: IconButton(
-                      icon: Icon(Icons.search),
-                      color: Colors.white,
-                      onPressed: () {
-                        codeSended = code.text;
-                        updateSearchQuery(code.text);
-                        print("Boton presionado!");
-                      },
-                    ),
-                  ),
-                ),
-                SizedBox(height: 20,),
-                Text("Tracking"),
-                TrackingCard(searchQuery: codeSended),
-              ],
-            ),
-          )
+        bottomNavigationBar: CurvedNavigationBar(
+          height: 60,
+          backgroundColor: Colors.transparent,
+          color: Colors.deepPurple,
+          items: items,
+          index: index,
+          onTap: (index){
+            setState(() {
+              this.index=index;
+            });
+          },
+          animationDuration: Duration(milliseconds: 300),
+        ),
+          body: getSelectedWidgetClient(index: index),
       ),
     );
   }

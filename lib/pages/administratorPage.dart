@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:example_souf_route/views/Administrator/ConsigneesView.dart';
+import 'package:example_souf_route/views/Administrator/ListComments.dart';
 import 'package:example_souf_route/views/Administrator/SendersView.dart';
 import 'package:flutter/material.dart';
 import '../main.dart';
@@ -85,6 +86,11 @@ class _AdminPageState extends State<AdminPage> {
       case 1:
         widget= ListShipmentView();
         break;
+      case 2:
+        widget= AddShipmentView();
+        break;
+        case 3:
+          widget= ListCommentsView();
       default:
         widget= AddShipmentView();
         break;
