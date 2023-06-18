@@ -1,4 +1,4 @@
-class Feedback {
+class FeedbackModel {
   final int id;
   final String description;
   final String date;
@@ -6,7 +6,7 @@ class Feedback {
   final int shipmentId;
 
 
-  Feedback(
+  FeedbackModel(
       {
         required this.id,
         required this.description,
