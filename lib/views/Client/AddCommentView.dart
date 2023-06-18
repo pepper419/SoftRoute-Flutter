@@ -16,13 +16,42 @@ class _AddCommentViewState extends State<AddCommentView> {
   //DATOS QUE IRAN EN EL DROPDOWN
   List<TypeOfComplaint> items = [];
   TypeOfComplaint? selectedItem;
+  //Para PopUp
+  bool _feedbackSend = false;
 
   //Datos para el POST del Comment
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _typeOfComplaintIdController = TextEditingController();
   final TextEditingController _shipmentIdController = TextEditingController();
-
+  //Pop Up para confirmar el envío del Comment
+  Future<void>_showFeedbacksentDialog() async {
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.check_circle, color: Color(0xffC8A1FF), size: 50),
+              SizedBox(height: 16),
+              Text('Feedback enviado', style: TextStyle(fontSize: 20)),
+            ],
+          ),
+          actions: [
+            Container(
+              alignment: Alignment.center,
+              child: TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK', style: TextStyle(fontSize: 16, color: Color(0xffC8A1FF)))),
+              ),
+          ],
+        );
+      },
+    );
+  }
   Future<void> addComment() async { try {
     final feedbackClient = FeedbackClient(
       date: DateTime.now().toString(),
@@ -84,10 +113,9 @@ class _AddCommentViewState extends State<AddCommentView> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-      padding: EdgeInsets.all(20),
+      padding: EdgeInsets.all(25),
       child: Column(
         children: [
-          const SizedBox(height: 20,),
           Align(
             alignment: Alignment.centerLeft,
             child: const Text("Add Comment",style: TextStyle(
@@ -115,34 +143,71 @@ class _AddCommentViewState extends State<AddCommentView> {
           Row(
             children: [
               Expanded(
-                  child:Text(
-                    "Select the type of complaint",style: TextStyle(fontSize: 15),),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: SizedBox(
+                    width: 150,
+                      child:Text(
+                        "Type of complaint",style: TextStyle(fontSize: 15),),
+                  ),
+                ),
               ),
-              SizedBox(
-                width: 100,
-                child: DropdownButtonFormField<String>(
-                  decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(width:1,color:Color(0xffC8A1FF))
+              Spacer(),
+
+              Expanded(
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: SizedBox(
+                    width: 150,
+                    child: DropdownButtonFormField<String>(
+                      decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(width:1,color:Color(0xffC8A1FF))
+                        ),
+                      ),
+                      value: selectedItem?.name,
+                      items: items.map((item) => DropdownMenuItem<String>(
+                        value: item.name,
+                        child: Text(item.name, style: TextStyle(fontSize: 15)),
+                      )).toList(),
+                      onChanged:(value){
+                        setState(() {
+                          selectedItem = items.firstWhere((item) => item.name == value);
+                        });
+                      },
                     ),
                   ),
-                  value: selectedItem?.name,
-                  items: items.map((item) => DropdownMenuItem<String>(
-                    value: item.name,
-                    child: Text(item.name, style: TextStyle(fontSize: 15)),
-                  )).toList(),
-                  onChanged:(value){
-                    setState(() {
-                      selectedItem = items.firstWhere((item) => item.name == value);
-                    });
-                  },
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 20,),
-
+          const SizedBox(height: 10,),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Container(
+              width: 150,
+              height: 40,
+              child: TextField(
+                controller: _shipmentIdController,
+                decoration: InputDecoration(
+                  filled: true,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: BorderSide.none,
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: BorderSide(width: 1, color: Color(0xFFC8A1FF)),
+                  ),
+                  contentPadding: EdgeInsets.symmetric(vertical: 15),
+                  hintText: ' ShipmentId',
+                  hintStyle: TextStyle(color: Colors.black),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 10,),
           TextField(
             controller: _descriptionController,
             decoration: InputDecoration(
@@ -163,24 +228,6 @@ class _AddCommentViewState extends State<AddCommentView> {
             ),
           ),
           const SizedBox(height: 20,),
-          TextField(
-            controller: _shipmentIdController,
-            decoration: InputDecoration(
-              filled: true,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8.0),
-                borderSide: BorderSide.none,
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8.0),
-                borderSide: BorderSide(width: 1, color: Color(0xFFC8A1FF)),
-              ),
-              contentPadding: EdgeInsets.symmetric(vertical: 15),
-              hintText: 'Enter ShipmentId',
-              hintStyle: TextStyle(color: Colors.black),
-            ),
-          ),
-
           Align(
             alignment: Alignment.centerRight,
             child: Container(
@@ -189,6 +236,7 @@ class _AddCommentViewState extends State<AddCommentView> {
               child: ElevatedButton(
                 onPressed: (){
                   addComment();
+                  _showFeedbacksentDialog();
                 },
                 child: const Text("Send"),
                 style: ElevatedButton.styleFrom(
