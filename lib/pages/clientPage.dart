@@ -18,13 +18,14 @@ class _ClientPageState extends State<ClientPage> {
 
 
   late String codeSended;
-  final code=TextEditingController();
+  final code = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     codeSended = '';
   }
+
   void updateSearchQuery(String query) {
     setState(() {
       codeSended = query;
@@ -35,14 +36,14 @@ class _ClientPageState extends State<ClientPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          appBar: CustomAppBar(username:"Client"),
-          body:Padding(
+          appBar: CustomAppBar(username: "Client"),
+          body: Padding(
             padding: const EdgeInsets.all(20),
             child: Column(
               children: [
                 TextField(
                   controller: code,
-                  style: const TextStyle(color:Colors.white),
+                  style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: const Color(0xffC8A1FF),
@@ -52,13 +53,13 @@ class _ClientPageState extends State<ClientPage> {
                     ),
                     hintText: "Enter tracking number",
                     hintStyle: const TextStyle(
-                        color:Colors.white
+                        color: Colors.white
                     ),
                     prefixIcon: IconButton(
-                      icon:Icon(Icons.search),
-                      color:Colors.white,
-                      onPressed: (){
-                        codeSended=code.text;
+                      icon: Icon(Icons.search),
+                      color: Colors.white,
+                      onPressed: () {
+                        codeSended = code.text;
                         updateSearchQuery(code.text);
                         print("Boton presionado!");
                       },
@@ -74,4 +75,10 @@ class _ClientPageState extends State<ClientPage> {
       ),
     );
   }
+
 }
+
+
+
+
+
