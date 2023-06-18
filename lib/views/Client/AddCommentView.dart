@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smooth_star_rating_null_safety/smooth_star_rating_null_safety.dart';
-
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 class AddCommentView extends StatefulWidget {
   const AddCommentView({super.key});
 
@@ -34,6 +33,7 @@ class _AddCommentViewState extends State<AddCommentView> {
             ),),
           ),
           const SizedBox(height: 20),
+
 
           Row(
             children: [
