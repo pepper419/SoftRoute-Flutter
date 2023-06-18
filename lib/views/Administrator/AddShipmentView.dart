@@ -5,6 +5,8 @@ import 'package:example_souf_route/models/Destination.dart';
 import 'package:example_souf_route/models/DocumentType.dart';
 import 'package:example_souf_route/models/Sender.dart';
 import 'package:example_souf_route/models/TypeOfPackage.dart';
+import 'package:example_souf_route/pages/administratorPage.dart';
+import 'package:example_souf_route/views/Administrator/AdminHomeView.dart';
 import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
@@ -281,34 +283,80 @@ class _AddShipmentViewState extends State<AddShipmentView> {
   }
   Widget build(BuildContext context)=>
       Scaffold(
-        body: Stepper(
-          type: StepperType.horizontal,
-          steps: getSteps(),
-          currentStep: currentStep,
-          onStepContinue: (){
-            final isLastStep=currentStep==getSteps().length-1;
-            final isSenderStep=currentStep==getSteps().length-3;
-            final isConsigneeStep=currentStep==getSteps().length-2;
+        body: Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: ColorScheme.light(primary: Colors.deepPurpleAccent),
+          ),
+          child: Stepper(
+            type: StepperType.horizontal,
+            steps: getSteps(),
+            currentStep: currentStep,
+            onStepContinue: (){
+              final isLastStep=currentStep==getSteps().length-1;
+              final isSenderStep=currentStep==getSteps().length-3;
+              final isConsigneeStep=currentStep==getSteps().length-2;
 
-            if(isSenderStep){
-              postSender();
-              getDestinationName();
-              getDocumentType();
-              getTypePackageName();
-            }
-            if(isConsigneeStep){
-              postConsignee();
-              getConsigneerName();
-              getSenderName();
-            }
-            if(isLastStep){
-              postShipment();
-            }else{
-              setState(()=>currentStep+=1);
-            }
-          },
-          onStepCancel:
-          currentStep==0?null: ()=>setState(()=>currentStep-=1),
+              if(isSenderStep){
+                postSender();
+                getDestinationName();
+                getDocumentType();
+                getTypePackageName();
+              }
+              if(isConsigneeStep){
+                postConsignee();
+                getConsigneerName();
+                getSenderName();
+              }
+              if(isLastStep){
+                // postShipment();
+
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Theme(
+                      data: Theme.of(context).copyWith(
+                        textButtonTheme: TextButtonThemeData(
+                          style: ButtonStyle(
+                            foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                            backgroundColor: MaterialStateProperty.all<Color>(Colors.deepPurpleAccent),
+                          ),
+                        ),
+                      ),
+                      child: AlertDialog(
+                        title: Text('Confirmación'),
+                        content: Text('¿Estás seguro de enviar el formulario?'),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop(); // Cerrar el cuadro de diálogo
+                            },
+                            child: Text('Cancelar'),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              postShipment(); // Enviar el formulario
+                              Navigator.of(context).pop(); // Cerrar el cuadro de diálogo
+                              Future.delayed(Duration(milliseconds: 300), () {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => AdminHomeView()),
+                                );
+                              });
+                            },
+                            child: Text('Enviar'),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                );
+              }else{
+                setState(()=>currentStep+=1);
+              }
+            },
+            onStepCancel:
+            currentStep==0?null: ()=>setState(()=>currentStep-=1),
+          ),
         ),
       );
 
@@ -540,6 +588,7 @@ class _AddShipmentViewState extends State<AddShipmentView> {
           ],
         ),
       ),
+
     ),
 
   ];
