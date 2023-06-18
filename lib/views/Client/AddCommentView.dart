@@ -33,19 +33,35 @@ class _AddCommentViewState extends State<AddCommentView> {
             ),),
           ),
           const SizedBox(height: 20,),
-          Align(
-            alignment: Alignment.centerRight,
-            child: DropdownButton<String>(
-              value: selectedItem,
-              items:items
-                  .map((item)=>DropdownMenuItem<String>(
-                value: item,
-                child: Text(item,style:TextStyle(fontSize: 20)),
-              ))
-                .toList(),
-              onChanged: (item)=>setState(()=> selectedItem = item!),
-            )
+          Row(
+            children: [
+              Expanded(
+                  child:Text(
+                    "Select the type of complaint",style: TextStyle(fontSize: 15),),
+              ),
+              SizedBox(
+                width: 100,
+                child: DropdownButtonFormField<String>(
+                  decoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(width:3,color:Color(0xffC8A1FF))
+                    ),
+                  ),
+                  value: selectedItem,
+                  items:items
+                      .map((item)=>DropdownMenuItem<String>(
+                    value: item,
+                    child: Text(item,style:TextStyle(fontSize: 15)),
+                  ))
+                    .toList(),
+                  onChanged: (item)=>setState(()=> selectedItem = item!),
+                )
+              ),
+            ],
           ),
+          const SizedBox(height: 20,),
+
           TextField(
             decoration: InputDecoration(
               filled: true,
@@ -54,7 +70,8 @@ class _AddCommentViewState extends State<AddCommentView> {
                   borderRadius: BorderRadius.circular(8.0),
                   borderSide: BorderSide.none
               ),
-              hintText: "Enter comment",
+              contentPadding: EdgeInsets.symmetric(vertical: 30),
+              hintText: " Add feedback",
               hintStyle: const TextStyle(
                   color:Colors.white
               ),
@@ -62,8 +79,10 @@ class _AddCommentViewState extends State<AddCommentView> {
           ),
           const SizedBox(height: 20,),
           ElevatedButton(
-            onPressed: (){},
-            child: const Text("Add comment"),
+            onPressed: (){
+              //agregar accion al boton
+            },
+            child: const Text("Send"),
             style: ElevatedButton.styleFrom(
               primary: const Color(0xffC8A1FF),
               shape: RoundedRectangleBorder(
