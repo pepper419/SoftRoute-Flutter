@@ -1,8 +1,11 @@
 import 'dart:convert';
+import 'package:example_souf_route/views/Administrator/ConsigneesView.dart';
+import 'package:example_souf_route/views/Administrator/SendersView.dart';
 import 'package:flutter/material.dart';
 import '../main.dart';
 import 'package:http/http.dart' as http;
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import '../views/Administrator/DeliveriesView.dart';
 import '../widgets/appBar.dart';
 import '../views/Administrator/AddShipmentView.dart';
 import '../views/Administrator/AdminHomeView.dart';
@@ -158,15 +161,37 @@ class NavigationDrawer extends StatelessWidget {
           title: const Text('Consignees'),
           onTap: () {
             Navigator.pop(context);
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => DeliveriesView())); // Navega a la vista de destinatarios
+            Navigator.of(context).push(
+              PageRouteBuilder(
+                pageBuilder: (context, animation, secondaryAnimation) => ConsigneesView(),
+                transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                  return FadeTransition(
+                    opacity: animation,
+                    child: child,
+                  );
+                },
+                transitionDuration: const Duration(milliseconds: 500),
+              ),
+            );
           },
         ),
         ListTile(
           leading: const Icon(Icons.person_rounded),
           title: const Text('Senders'),
           onTap: () {
-            onTabTapped(0);
             Navigator.pop(context);
+            Navigator.of(context).push(
+              PageRouteBuilder(
+                pageBuilder: (context, animation, secondaryAnimation) => SendersView(),
+                transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                  return FadeTransition(
+                    opacity: animation,
+                    child: child,
+                  );
+                },
+                transitionDuration: const Duration(milliseconds: 500),
+              ),
+            );
           },
         ),
         const Divider(color: Colors.black54),
@@ -182,20 +207,4 @@ class NavigationDrawer extends StatelessWidget {
   );
 }
 
-class DeliveriesView extends StatelessWidget {
 
-
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        drawer: NavigationDrawer(onTabTapped: (index){}),
-        appBar: CustomAppBar(username: "Deliveries"),
-        body: const Center(
-          child: Text('Deliveries'),
-        ),
-      ),
-    );
-  }
-}
