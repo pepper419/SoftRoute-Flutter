@@ -1,4 +1,5 @@
 
+import 'package:example_souf_route/views/Client/AddCommentView.dart';
 import 'package:flutter/material.dart';
 import 'pages/Login.dart';
 import 'package:http/http.dart' as http;
@@ -18,7 +19,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: "Soft Route App",
       debugShowCheckedModeBanner: false,
-      home:HomePage(),
+      home:AddCommentView(),
+      //HomePage(),
     );
   }
 }
