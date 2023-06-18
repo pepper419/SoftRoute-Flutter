@@ -58,6 +58,7 @@ class _ListShipmentViewState extends State<ListShipmentView> {
               margin: EdgeInsets.all(5),
               elevation: 10,
               child: ListTile(
+                    leading: Text((index+1).toString()),
                     title: Text(shipments[index].description),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
