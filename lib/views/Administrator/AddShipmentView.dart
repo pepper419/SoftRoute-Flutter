@@ -59,9 +59,38 @@ class _AddShipmentViewState extends State<AddShipmentView> {
     getSenderName();
   }
 
+  Future<void> postDeliveries(int shipmentId)async{
+
+    String URL='http://20.150.216.134:7070/api/v1/deliveries';
+    int? shipmentid=shipmentId;
+    String description=descriptionShipmentController.text;
+    DateTime now= DateTime.now();
 
 
-  Future<void> postShipment()async{
+    final url=Uri.parse(URL);
+
+    var response =await http.post(
+      url,
+      headers: {
+        'Content-Type':'application/json',
+      },
+      body: json.encode({
+        'date':now.add(Duration(days: 3)).toString(),
+        'description':description,
+        'shipmentId':shipmentid,
+      })
+    );
+
+    if(response.statusCode==200){
+      print('Delivery created');
+    }else{
+      print('Request failed with status: ${response.statusCode}');
+    }
+
+  }
+
+
+  Future<int> postShipment()async{
     String URL='http://20.150.216.134:7070/api/v1/shipments';
     int? selectedPackageId=selectedPackageType?.id;
     int? selectedSenderId=selectedSenderName?.id;
@@ -95,13 +124,16 @@ class _AddShipmentViewState extends State<AddShipmentView> {
       })
     );
 
-    if(response.statusCode==200){
+    if(response.statusCode==200 || response.statusCode==201){
       print('POST successfully completed');
+      // Obtener el ID del envío desde la respuesta
+      final responseData = json.decode(response.body);
+      final shipmentId = responseData['id'] as int;
+      return shipmentId;
     }else{
       print('POST request failed: ${response.statusCode}');
+      throw Exception('Failed to post shipment');
     }
-    print('JULIAN TE AMO AAAA');
-
   }
 
   Future<void> postSender()async{
@@ -333,8 +365,14 @@ class _AddShipmentViewState extends State<AddShipmentView> {
                             child: Text('Cancelar'),
                           ),
                           TextButton(
-                            onPressed: () {
-                              postShipment();
+                            onPressed: () async{
+
+                              //Llamar al primer metodo POST
+                              final shipmentId=await postShipment();
+
+                              //Lamar al segundo método POST con el ID generado
+                              await postDeliveries(shipmentId);
+
                               Navigator.of(context).pop();
                               Future.delayed(Duration(milliseconds: 300), () {
                                 Navigator.pushReplacement(
