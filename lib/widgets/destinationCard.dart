@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../views/Administrator/GoogleMapsScreen.dart';
+
 class DestinationCard extends StatelessWidget {
 
   final String name;
@@ -31,10 +33,17 @@ class DestinationCard extends StatelessWidget {
                         children: [
                           Container(
                             width: 120,
-                            height: 120, // Ajusta el tamaño según tus necesidades
-                            // Agrega aquí la vista de Google Maps o cualquier otro widget que desees mostrar
-                            // Puedes utilizar el widget `GoogleMap` de la biblioteca `google_maps_flutter` para mostrar el mapa
-                            // Ejemplo: GoogleMap(...),
+                            height: 120,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                    'images/maps.png',
+                                  width: 120,
+                                  height: 120,
+                                ),
+                              ],
+                            ),
                           ),
                           SizedBox(width: 10),
                           Expanded(
@@ -68,7 +77,16 @@ class DestinationCard extends StatelessWidget {
                             color:Color(0xFFBA8EFC),
                             child: IconButton(
                               onPressed: (){
-                                print("julian t amo");
+                                if (MediaQuery.of(context).size.width >= 600) {
+                                  print("julian t amo");
+                                } else {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => GoogleMapsScreen(),
+                                    ),
+                                  );
+                                }
                               },
                               icon: Icon(Icons.arrow_forward_ios_sharp),
                               color: Colors.white,
