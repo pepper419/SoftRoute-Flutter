@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../views/Administrator/GoogleMapsScreen.dart';
+
+
 
 class DestinationCard extends StatelessWidget {
 
   final String name;
+  final LatLng location;
+
 
   DestinationCard({
-    required this.name
+    required this.name,
+    required this.location,
   });
 
   @override
@@ -80,7 +86,10 @@ class DestinationCard extends StatelessWidget {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => GoogleMapsScreen(),
+                                      builder: (context) => GoogleMapsScreen(
+                                        name: name,
+                                        location: location,
+                                      ),
                                     ),
                                   );
                                 }
