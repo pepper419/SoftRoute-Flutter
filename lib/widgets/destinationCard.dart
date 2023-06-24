@@ -34,15 +34,12 @@ class DestinationCard extends StatelessWidget {
                           Container(
                             width: 120,
                             height: 120,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Image.asset(
-                                    'images/maps.png',
-                                  width: 120,
-                                  height: 120,
-                                ),
-                              ],
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(25),
+                              image: DecorationImage(
+                                image: AssetImage('images/maps.png'),
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
                           SizedBox(width: 10),
