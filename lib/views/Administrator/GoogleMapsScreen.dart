@@ -14,7 +14,7 @@ class GoogleMapsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Location: $name'),
+        title: Text('$name'),
         backgroundColor: Colors.deepPurple,
       ),
       body: GoogleMap(
