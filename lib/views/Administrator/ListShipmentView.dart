@@ -69,43 +69,49 @@ class _ListShipmentViewState extends State<ListShipmentView> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView.builder(
-          itemCount: shipments == null ? 0 : shipments?.length,
-          itemBuilder: (context, index) {
-            final destinoName = destinoNames[shipments[index].destinyId];
-            final consignadoName = consignadoNames[shipments[index].consigneesId];
-            final remitenteName = remitenteNames[shipments[index].senderId];
-            return Card(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-              color: Color(0xFFF0E5FF),
-              margin: EdgeInsets.all(5),
-              elevation: 10,
+        itemCount: shipments.length,
+        itemBuilder: (context, index) {
+          final destinoName = destinoNames[shipments[index].destinyId];
+          final consignadoName = consignadoNames[shipments[index].consigneesId];
+          final remitenteName = remitenteNames[shipments[index].senderId];
+          return Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            margin: EdgeInsets.all(5),
+            elevation: 10,
+            child: Padding(
+              padding: EdgeInsets.all(20),
               child: ListTile(
-                    leading: Text((index+1).toString()),
-                    title: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget> [
-                        Text('Destino:${destinoName ?? ''}'),
-                        Text('Consignado:${consignadoName ?? ''}'),
-                        Text('Remitente:${remitenteName ?? ''}'),
-                      ],
-                    ),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget> [
-                        Text('Descripción: '+ shipments[index].description),
-                        Text('Fecha: '+ shipments[index].date),
-                        Text('Flete: '+ shipments[index].freight.toString() ),
-                        Text('Peso: '+ shipments[index].weight.toString()),
-                        Text('Cantidad:'+ shipments[index].quantity.toString()),
-                      ],
-                    ),
-                    trailing: Icon(Icons.edit ),
-                onTap: (){
+                leading: Text(shipments[index].id.toString()),
+                title: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text('Destino:${destinoName ?? ''}'),
+                    Text('Consignatario:${consignadoName ?? ''}'),
+                    Text('Remitente:${remitenteName ?? ''}'),
+                  ],
+                ),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text('Descripción: ' +
+                        shipments[index].description),
+                    Text('Fecha: ' + shipments[index].date),
+                    Text('Flete: ' + shipments[index].freight.toString()),
+                    Text('Peso: ' + shipments[index].weight.toString()),
+                    Text('Cantidad:' + shipments[index].quantity.toString()),
+                  ],
+                ),
+                trailing: Icon(Icons.edit),
+                onTap: () {
 
                 },
-                  ),
-              );
-          }),
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 }
