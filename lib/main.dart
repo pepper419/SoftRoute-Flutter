@@ -1,4 +1,6 @@
 
+import 'package:example_souf_route/pages/LoginAndRegister.dart';
+import 'package:example_souf_route/pages/registro.dart';
 import 'package:example_souf_route/views/Client/AddCommentView.dart';
 import 'package:flutter/material.dart';
 import 'pages/Login.dart';
@@ -19,10 +21,18 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: "Soft Route App",
       debugShowCheckedModeBanner: false,
-      home:HomePage(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => HomePage(), // Ruta inicial (home)
+        '/registro': (context) => RegistroScreen(),
+        '/admin': (context) => AdminPage(username: '',),
+        // Agrega otras rutas si es necesario
+      },
     );
   }
 }
+
+
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -56,7 +66,7 @@ class HomePage extends StatelessWidget {
                   ElevatedButton(onPressed: (){
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => LoginView()),
+                      MaterialPageRoute(builder: (context) => LoginandRegisterView()),
                     );
                   },child: Text("ADMINISTRATORS"),
                     style: ButtonStyle(

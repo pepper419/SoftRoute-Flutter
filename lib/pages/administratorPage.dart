@@ -13,10 +13,12 @@ import '../views/Administrator/ListShipmentView.dart';
 
 
 class AdminPage extends StatefulWidget {
+  static const routeName = '/admin';
 
   final String username;
 
   AdminPage({required this.username});
+
 
   @override
   State<AdminPage> createState() => _AdminPageState();
